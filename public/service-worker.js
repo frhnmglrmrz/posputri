@@ -1,4 +1,4 @@
-const CACHE_NAME = 'posputri-v1';
+const CACHE_NAME = 'posputri-v2';
 const STATIC_ASSETS = [
     '/',
     '/pos',
@@ -37,6 +37,27 @@ self.addEventListener('fetch', (event) => {
         return;
     }
 
+    // Navigation requests (HTML pages): Network-First, fallback to cached page or /pos when offline
+    if (event.request.mode === 'navigate') {
+        event.respondWith(
+            fetch(event.request)
+                .then((networkResponse) => {
+                    if (networkResponse && networkResponse.status === 200) {
+                        const clone = networkResponse.clone();
+                        caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+                    }
+                    return networkResponse;
+                })
+                .catch(() => {
+                    return caches.match(event.request).then((cachedResponse) => {
+                        return cachedResponse || caches.match('/pos');
+                    });
+                })
+        );
+        return;
+    }
+
+    // Static assets (CSS, JS, fonts, images): Cache-First with background revalidation
     event.respondWith(
         caches.match(event.request).then((cachedResponse) => {
             if (cachedResponse) {
@@ -58,11 +79,6 @@ self.addEventListener('fetch', (event) => {
                         caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
                     }
                     return networkResponse;
-                })
-                .catch(() => {
-                    if (event.request.mode === 'navigate') {
-                        return caches.match('/pos');
-                    }
                 });
         })
     );
