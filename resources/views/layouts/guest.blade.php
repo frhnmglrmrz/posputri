@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full bg-slate-900">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full bg-zinc-950">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ config('app.name', 'Laravel Offline-First POS') }}</title>
+    <title>{{ config('app.name', 'POS Putri') }} — Masuk Petugas</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="h-full font-sans antialiased text-slate-100 selection:bg-indigo-500 selection:text-white">
+<body class="h-full font-sans antialiased bg-zinc-950 text-zinc-100 selection:bg-emerald-500 selection:text-black">
     <div class="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
         {{ $slot ?? '' }}
         @yield('content')
