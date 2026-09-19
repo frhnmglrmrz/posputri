@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full bg-zinc-950">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full bg-slate-50">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,7 +7,7 @@
     <title>{{ config('app.name', 'POS Putri') }} — Masuk Petugas</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="h-full font-sans antialiased bg-zinc-950 text-zinc-100 selection:bg-emerald-500 selection:text-white">
+<body class="h-full font-sans antialiased bg-slate-50 text-slate-900 selection:bg-emerald-600 selection:text-white">
     <div class="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
         {{ $slot ?? '' }}
         @yield('content')
