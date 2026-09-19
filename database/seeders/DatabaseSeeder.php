@@ -19,6 +19,10 @@ class DatabaseSeeder extends Seeder
             PaymentMethodSeeder::class,
             CategorySeeder::class,
             ProductSeeder::class,
+            SettingSeeder::class,
+            CustomerSeeder::class,
+            ShiftSeeder::class,
+            TransactionSeeder::class,
         ]);
     }
 }
