@@ -26,13 +26,17 @@ class PhaseOneFoundationTest extends TestCase
     }
 
     /**
-     * Test root route redirects to login for guests.
+     * Test root route displays the welcome page for guests.
      */
-    public function test_guest_is_redirected_to_login_from_root(): void
+    public function test_guest_can_view_welcome_page_from_root(): void
     {
         $response = $this->get('/');
 
-        $response->assertRedirect(route('login'));
+        $response->assertOk()
+            ->assertSee('POS PUTRI')
+            ->assertSee('Terpercaya (Reliable)')
+            ->assertSee('Berani (Bold)')
+            ->assertSee('Transparan (Transparent)');
     }
 
     /**

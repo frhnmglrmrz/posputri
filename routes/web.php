@@ -15,8 +15,8 @@ use App\Livewire\Users\UserManager;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return redirect()->route('login');
-});
+    return view('welcome');
+})->name('welcome');
 
 // Guest Authentication Routes
 Route::middleware('guest')->group(function () {
