@@ -15,14 +15,14 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="min-h-full font-sans antialiased bg-zinc-950 text-zinc-100 selection:bg-emerald-500 selection:text-black flex flex-col">
+<body class="min-h-full font-sans antialiased bg-zinc-950 text-zinc-100 selection:bg-emerald-500 selection:text-white flex flex-col">
 
     <!-- TOPBAR NAVIGATION -->
     <header class="border-b border-zinc-800/80 bg-zinc-950/90 backdrop-blur-md sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
             <!-- Brand Logo -->
             <div class="flex items-center gap-3">
-                <div class="w-9 h-9 rounded-lg bg-emerald-500 text-zinc-950 flex items-center justify-center font-bold text-lg shadow-sm shadow-emerald-500/20">
+                <div class="w-9 h-9 rounded-lg bg-emerald-600 text-white flex items-center justify-center font-bold text-lg shadow-sm shadow-emerald-600/20">
                     P
                 </div>
                 <div class="flex flex-col">
@@ -55,18 +55,15 @@
                     <a href="{{ route('dashboard') }}" class="px-4 py-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-white font-medium text-sm transition">
                         Dashboard
                     </a>
-                    <a href="{{ route('pos.index') }}" class="px-4 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-semibold text-sm transition flex items-center gap-1.5 active:scale-95 shadow-sm shadow-emerald-500/20">
+                    <a href="{{ route('pos.index') }}" class="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm transition flex items-center gap-1.5 active:scale-95 shadow-sm shadow-emerald-600/20">
                         <span>Buka Kasir</span>
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                         </svg>
                     </a>
                 @else
-                    <a href="{{ route('login') }}" class="px-4 py-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-white font-medium text-sm transition">
-                        Masuk Petugas
-                    </a>
-                    <a href="{{ route('login') }}" class="px-4 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-semibold text-sm transition flex items-center gap-1.5 active:scale-95 shadow-sm shadow-emerald-500/20">
-                        <span>Mulai Transaksi</span>
+                    <a href="{{ route('login') }}" class="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm transition flex items-center gap-1.5 active:scale-95 shadow-sm shadow-emerald-600/20">
+                        <span>Masuk Petugas / Kasir</span>
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                         </svg>
@@ -101,7 +98,7 @@
 
                 <!-- Action CTAs -->
                 <div class="flex flex-col sm:flex-row items-center justify-center gap-3.5 mb-12">
-                    <a href="{{ route('login') }}" class="w-full sm:w-auto px-7 py-3.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-bold text-base transition flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20 active:scale-98">
+                    <a href="{{ route('login') }}" class="w-full sm:w-auto px-7 py-3.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-base transition flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/20 active:scale-98">
                         <span>Buka Terminal Kasir</span>
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -275,7 +272,7 @@
                                 <span class="text-emerald-400" x-text="formatIdr(total)"></span>
                             </div>
 
-                            <a href="{{ route('login') }}" class="mt-4 w-full py-2.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-bold text-xs uppercase tracking-wider text-center block transition active:scale-95 shadow-md shadow-emerald-500/10">
+                            <a href="{{ route('login') }}" class="mt-4 w-full py-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs uppercase tracking-wider text-center block transition active:scale-95 shadow-md shadow-emerald-600/10">
                                 Buka Kasir Sungguhan →
                             </a>
                         </div>
@@ -508,7 +505,7 @@
                         @csrf
                         <input type="hidden" name="email" value="kasir@posputri.test">
                         <input type="hidden" name="password" value="password">
-                        <button type="submit" class="w-full py-2.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-bold text-xs transition shadow-sm shadow-emerald-500/20 active:scale-98">
+                        <button type="submit" class="w-full py-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs transition shadow-sm shadow-emerald-600/20 active:scale-98">
                             Masuk Sebagai Kasir (Mulai Jualan) →
                         </button>
                     </form>

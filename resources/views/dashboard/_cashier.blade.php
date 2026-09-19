@@ -33,7 +33,7 @@
             </div>
 
             <div class="mt-5 pt-3 border-t border-zinc-800">
-                <a href="{{ route('shifts.index') }}" class="w-full py-2 px-3 rounded-lg {{ $activeShift ? 'bg-zinc-800 hover:bg-zinc-700 text-zinc-300' : 'bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-bold' }} text-xs font-semibold transition flex items-center justify-center gap-1.5 active:scale-98">
+                <a href="{{ route('shifts.index') }}" class="w-full py-2 px-3 rounded-lg {{ $activeShift ? 'bg-zinc-800 hover:bg-zinc-700 text-zinc-300' : 'bg-emerald-600 hover:bg-emerald-500 text-white font-bold' }} text-xs font-semibold transition flex items-center justify-center gap-1.5 active:scale-98">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
@@ -91,7 +91,7 @@
             </div>
 
             <div class="mt-6 space-y-2">
-                <a href="{{ route('pos.index') }}" class="w-full py-3 px-4 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-zinc-950 text-sm font-bold text-center flex items-center justify-center gap-2 shadow-md shadow-emerald-500/20 transition active:scale-98">
+                <a href="{{ route('pos.index') }}" class="w-full py-3 px-4 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-bold text-center flex items-center justify-center gap-2 shadow-md shadow-emerald-600/20 transition active:scale-98">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                     </svg>

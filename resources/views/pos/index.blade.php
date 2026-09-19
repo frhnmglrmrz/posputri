@@ -45,14 +45,14 @@
             <button type="button"
                 @click="selectCategory('all')"
                 class="px-3 py-1 rounded-md text-xs font-semibold whitespace-nowrap transition active:scale-95"
-                :class="selectedCategory === 'all' ? 'bg-emerald-500 text-zinc-950 font-bold shadow-sm shadow-emerald-500/20' : 'bg-zinc-800 text-zinc-300 hover:bg-zinc-700'">
+                :class="selectedCategory === 'all' ? 'bg-emerald-600 text-white font-bold shadow-sm shadow-emerald-600/20' : 'bg-zinc-800 text-zinc-300 hover:bg-zinc-700'">
                 Semua Produk
             </button>
             <template x-for="category in categories" :key="category.id">
                 <button type="button"
                     @click="selectCategory(category.id)"
                     class="px-3 py-1 rounded-md text-xs font-semibold whitespace-nowrap transition active:scale-95"
-                    :class="selectedCategory === category.id ? 'bg-emerald-500 text-zinc-950 font-bold shadow-sm shadow-emerald-500/20' : 'bg-zinc-800 text-zinc-300 hover:bg-zinc-700'"
+                    :class="selectedCategory === category.id ? 'bg-emerald-600 text-white font-bold shadow-sm shadow-emerald-600/20' : 'bg-zinc-800 text-zinc-300 hover:bg-zinc-700'"
                     x-text="category.name">
                 </button>
             </template>
@@ -81,7 +81,7 @@
                         </div>
                         <div class="mt-2.5 pt-2 border-t border-zinc-800/80 flex items-center justify-between">
                             <span class="text-xs font-bold text-emerald-400 font-mono tabular-nums" x-text="formatMoney(product.selling_price)"></span>
-                            <span class="p-1 rounded bg-zinc-800 group-hover:bg-emerald-500 group-hover:text-zinc-950 text-zinc-400 transition">
+                            <span class="p-1 rounded bg-zinc-800 group-hover:bg-emerald-600 group-hover:text-white text-zinc-400 transition">
                                 <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
                                 </svg>
@@ -168,7 +168,7 @@
             <button type="button"
                 @click="openCheckout()"
                 :disabled="cart.length === 0"
-                class="w-full py-3 px-4 rounded-lg bg-emerald-500 hover:bg-emerald-400 disabled:bg-zinc-800 disabled:text-zinc-600 disabled:cursor-not-allowed text-zinc-950 font-extrabold text-sm shadow-md shadow-emerald-500/20 transition flex items-center justify-center gap-2 active:scale-98">
+                class="w-full py-3 px-4 rounded-lg bg-emerald-600 hover:bg-emerald-500 disabled:bg-zinc-800 disabled:text-zinc-600 disabled:cursor-not-allowed text-white font-extrabold text-sm shadow-md shadow-emerald-600/20 transition flex items-center justify-center gap-2 active:scale-98">
                 <span>SELESAIKAN PEMBAYARAN</span>
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -207,7 +207,7 @@
                         <button type="button"
                             @click="selectedPaymentMethod = method.code"
                             class="p-2.5 rounded-lg border text-center transition active:scale-95"
-                            :class="selectedPaymentMethod === method.code ? 'bg-emerald-500 border-emerald-400 text-zinc-950 font-bold' : 'bg-zinc-950 border-zinc-800 text-zinc-300 hover:bg-zinc-800'">
+                            :class="selectedPaymentMethod === method.code ? 'bg-emerald-600 border-emerald-500 text-white font-bold' : 'bg-zinc-950 border-zinc-800 text-zinc-300 hover:bg-zinc-800'">
                             <span class="text-xs truncate block" x-text="method.name"></span>
                         </button>
                     </template>
@@ -244,7 +244,7 @@
                 <button type="button" @click="closeCheckout()" class="flex-1 py-2.5 px-4 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-300 font-semibold text-xs transition">
                     Batal
                 </button>
-                <button type="button" @click="confirmCheckout()" class="flex-1 py-2.5 px-4 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-bold text-xs shadow-md shadow-emerald-500/20 transition flex items-center justify-center gap-1.5 active:scale-98">
+                <button type="button" @click="confirmCheckout()" class="flex-1 py-2.5 px-4 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-md shadow-emerald-600/20 transition flex items-center justify-center gap-1.5 active:scale-98">
                     <span>Selesaikan Transaksi</span>
                 </button>
             </div>

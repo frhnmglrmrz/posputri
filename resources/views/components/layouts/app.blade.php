@@ -16,7 +16,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
 </head>
-<body class="min-h-full font-sans antialiased bg-zinc-950 text-zinc-100 selection:bg-emerald-500 selection:text-black flex flex-col">
+<body class="min-h-full font-sans antialiased bg-zinc-950 text-zinc-100 selection:bg-emerald-500 selection:text-white flex flex-col">
     <!-- Topbar Navigation: Crisp 1px Hairline Border, Modern POS Standard -->
     <header class="bg-zinc-950/90 backdrop-blur-md border-b border-zinc-800/80 sticky top-0 z-40">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -24,7 +24,7 @@
                 <!-- Left: Brand & Navigation Menu -->
                 <div class="flex items-center gap-6">
                     <a href="{{ route('dashboard') }}" class="flex items-center gap-2.5 group">
-                        <div class="w-8 h-8 rounded-lg bg-emerald-500 text-zinc-950 flex items-center justify-center font-extrabold text-sm shadow-sm shadow-emerald-500/20 group-hover:scale-105 transition">
+                        <div class="w-8 h-8 rounded-lg bg-emerald-600 text-white flex items-center justify-center font-extrabold text-sm shadow-sm shadow-emerald-600/20 group-hover:scale-105 transition">
                             P
                         </div>
                         <div class="flex flex-col">

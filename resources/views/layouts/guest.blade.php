@@ -7,7 +7,7 @@
     <title>{{ config('app.name', 'POS Putri') }} — Masuk Petugas</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="h-full font-sans antialiased bg-zinc-950 text-zinc-100 selection:bg-emerald-500 selection:text-black">
+<body class="h-full font-sans antialiased bg-zinc-950 text-zinc-100 selection:bg-emerald-500 selection:text-white">
     <div class="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
         {{ $slot ?? '' }}
         @yield('content')

@@ -4,7 +4,7 @@
 <div class="sm:mx-auto sm:w-full sm:max-w-md px-4">
     <!-- Header & Brand Logo -->
     <div class="text-center mb-8">
-        <a href="{{ url('/') }}" class="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-emerald-500 text-zinc-950 font-extrabold text-2xl mb-4 shadow-lg shadow-emerald-500/20 hover:scale-105 transition">
+        <a href="{{ url('/') }}" class="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-emerald-600 text-white font-extrabold text-2xl mb-4 shadow-lg shadow-emerald-600/20 hover:scale-105 transition">
             P
         </a>
         <h2 class="text-2xl font-bold tracking-tight text-white">POS Putri Offline-First</h2>
@@ -50,7 +50,7 @@
 
             <!-- Submit Button (Bold, Tactile) -->
             <div class="pt-2">
-                <button type="submit" class="w-full py-3 px-4 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-bold text-sm shadow-md shadow-emerald-500/20 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 focus:ring-offset-zinc-900 transition flex items-center justify-center gap-2 active:scale-98">
+                <button type="submit" class="w-full py-3 px-4 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm shadow-md shadow-emerald-600/20 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 focus:ring-offset-zinc-900 transition flex items-center justify-center gap-2 active:scale-98">
                     <span>Masuk ke Sistem</span>
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
