@@ -1,8 +1,9 @@
-const CACHE_NAME = 'posputri-v2';
+const CACHE_NAME = 'posputri-v3';
 const STATIC_ASSETS = [
     '/',
     '/pos',
     '/manifest.json',
+    '/favicon.svg',
 ];
 
 self.addEventListener('install', (event) => {

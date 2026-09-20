@@ -4,8 +4,8 @@
 <div class="sm:mx-auto sm:w-full sm:max-w-md px-4">
     <!-- Header & Brand Logo -->
     <div class="text-center mb-8">
-        <a href="{{ url('/') }}" class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-emerald-600 text-white font-extrabold text-2xl mb-4 shadow-md hover:scale-105 transition">
-            P
+        <a href="{{ url('/') }}" class="inline-flex mb-4 group">
+            <x-application-logo class="w-16 h-16 shadow-md group-hover:scale-105 transition duration-150" />
         </a>
         <h2 class="text-2xl font-bold tracking-tight text-slate-900">POS Putri Offline-First</h2>
         <p class="text-xs text-slate-500 mt-1">Masuk untuk membuka shift kasir atau mengelola outlet</p>

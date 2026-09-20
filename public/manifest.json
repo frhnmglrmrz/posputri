@@ -1,14 +1,20 @@
 {
-  "name": "POS Putri - Laravel Offline-First POS",
+  "name": "POS Putri - Modern Offline-First POS",
   "short_name": "POS Putri",
   "start_url": "/pos",
   "scope": "/",
   "display": "standalone",
   "orientation": "any",
-  "background_color": "#020617",
-  "theme_color": "#4f46e5",
-  "description": "Aplikasi Point of Sale Web Berbasis Offline-First Laravel",
+  "background_color": "#ffffff",
+  "theme_color": "#059669",
+  "description": "Aplikasi Point of Sale Ritel Modern Berbasis Offline-First Laravel",
   "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
     {
       "src": "/icons/icon-192.png",
       "sizes": "192x192",

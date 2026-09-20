@@ -6,6 +6,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ $title ?? config('app.name', 'POS Putri — Offline-First POS') }}</title>
 
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#ffffff">
 
@@ -24,12 +25,10 @@
                 <!-- Left: Brand & Grouped Navigation Menu -->
                 <div class="flex items-center gap-6">
                     <a href="{{ route('dashboard') }}" class="flex items-center gap-2.5 group">
-                        <div class="w-8 h-8 rounded-lg bg-emerald-600 text-white flex items-center justify-center font-extrabold text-sm shadow-xs group-hover:scale-105 transition">
-                            P
-                        </div>
+                        <x-application-logo class="w-8 h-8 rounded-xl shadow-xs group-hover:scale-105 transition duration-150" />
                         <div class="flex flex-col">
-                            <span class="font-bold text-sm tracking-tight text-slate-900 leading-none">POS PUTRI</span>
-                            <span class="text-[10px] font-mono text-slate-500 leading-tight mt-0.5">OFFLINE-FIRST</span>
+                            <span class="font-bold text-sm tracking-tight text-slate-900 leading-none group-hover:text-emerald-700 transition">POS PUTRI</span>
+                            <span class="text-[10px] font-mono font-semibold text-slate-400 leading-tight mt-0.5 tracking-wider">OFFLINE-FIRST</span>
                         </div>
                     </a>
 

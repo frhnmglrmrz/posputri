@@ -6,6 +6,7 @@
     <title>POS Putri — Sistem Kasir Offline-First Terpercaya, Berani, & Transparan</title>
     <meta name="description" content="Sistem Point of Sale (POS) ritel modern offline-first yang menjamin operasional kasir tetap melaju tanpa hambatan internet. Audit shift transparan dan kendali multi-outlet terpercaya.">
 
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#ffffff">
 
@@ -22,15 +23,13 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
             <!-- Brand Logo -->
             <div class="flex items-center gap-3">
-                <div class="w-9 h-9 rounded-lg bg-emerald-600 text-white flex items-center justify-center font-bold text-lg shadow-sm">
-                    P
-                </div>
+                <x-application-logo class="w-10 h-10 rounded-xl shadow-xs" />
                 <div class="flex flex-col">
                     <span class="font-bold tracking-tight text-base leading-none text-slate-900 flex items-center gap-2">
                         POS PUTRI
-                        <span class="text-[10px] uppercase font-mono px-1.5 py-0.5 rounded bg-slate-100 text-emerald-800 border border-slate-200 font-semibold tracking-wide">v1.0 Offline-First</span>
+                        <span class="text-[10px] uppercase font-mono px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-800 border border-emerald-300 font-semibold tracking-wide">v1.0 Offline-First</span>
                     </span>
-                    <span class="text-[11px] text-slate-500 leading-tight mt-0.5">Reliable • Bold • Transparent</span>
+                    <span class="text-[11px] text-slate-500 font-medium leading-tight mt-0.5">Reliable • Bold • Transparent</span>
                 </div>
             </div>
 
@@ -518,8 +517,8 @@
     <!-- FOOTER: CLEAN, PROFESSIONAL, SQUARE/SHOPIFY STANDARD -->
     <footer class="border-t border-slate-200 bg-white py-10 mt-auto text-xs text-slate-500">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div class="flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
+            <div class="flex items-center gap-2.5">
+                <x-application-logo class="w-6 h-6 rounded-lg" />
                 <span class="text-slate-900 font-bold">POS Putri v1.0</span>
                 <span>— Dirancang untuk Kecepatan Kasir, Ketahanan Offline, dan Transparansi Data.</span>
             </div>
