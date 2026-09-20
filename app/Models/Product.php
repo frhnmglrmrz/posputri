@@ -17,6 +17,34 @@ class Product extends Model
     /** @use HasFactory<ProductFactory> */
     use HasCustomUuid, HasFactory, SoftDeletes;
 
+    protected static function booted(): void
+    {
+        static::creating(function (Product $product): void {
+            if (empty($product->sku)) {
+                $product->sku = static::generateNextSku();
+            }
+        });
+    }
+
+    public static function generateNextSku(): string
+    {
+        $maxNum = 0;
+        $skus = static::withTrashed()
+            ->where('sku', 'like', 'PRD-%')
+            ->pluck('sku');
+
+        foreach ($skus as $sku) {
+            if (preg_match('/^PRD-(\d+)$/i', $sku, $matches)) {
+                $num = (int) $matches[1];
+                if ($num > $maxNum) {
+                    $maxNum = $num;
+                }
+            }
+        }
+
+        return 'PRD-'.str_pad((string) ($maxNum + 1), 5, '0', STR_PAD_LEFT);
+    }
+
     /**
      * Get the attributes that should be cast.
      *

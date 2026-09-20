@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Enums\StockMovementType;
 use App\Enums\TransactionStatus;
 use App\Livewire\Products\ProductManager;
+use App\Models\Category;
 use App\Models\Outlet;
 use App\Models\Product;
 use App\Models\Stock;
@@ -526,5 +527,61 @@ class OfflinePosSystemTest extends TestCase
             ->set('search', $product->sku)
             ->assertSee($product->name)
             ->assertSee($product->sku);
+    }
+
+    /**
+     * Test SKU and Transaction number are auto-generated properly.
+     */
+    public function test_sku_and_transaction_numbers_are_auto_generated(): void
+    {
+        // 1. Next SKU generates correctly with PRD- prefix and padded counter
+        $nextSku = Product::generateNextSku();
+        $this->assertMatchesRegularExpression('/^PRD-\d{5}$/', $nextSku);
+
+        // 2. Product created without SKU automatically gets generated SKU
+        $category = Category::first();
+        $createdProduct = Product::create([
+            'category_id' => $category->id,
+            'name' => 'Auto SKU Test Product',
+            'purchase_price' => 1000,
+            'selling_price' => 2000,
+        ]);
+        $this->assertNotEmpty($createdProduct->sku);
+        $this->assertMatchesRegularExpression('/^PRD-\d{5}$/', $createdProduct->sku);
+
+        // 3. Livewire ProductManager modal initializes with auto SKU and can regenerate
+        $inventory = User::where('email', 'gudang@berkahmart.test')->first();
+        Livewire::actingAs($inventory)
+            ->test(ProductManager::class)
+            ->call('openCreateModal')
+            ->assertSet('isModalOpen', true)
+            ->assertSet('sku', Product::generateNextSku())
+            ->call('regenerateSku')
+            ->assertSet('isModalOpen', true);
+
+        // 4. Transaction number auto-generation format TRX-YYYYMMDD-XXXX
+        $nextTrxNumber = Transaction::generateNextNumber();
+        $this->assertMatchesRegularExpression('/^TRX-\d{8}-[A-Z0-9]{4}$/', $nextTrxNumber);
+
+        // 5. Transaction created via TransactionService without transaction_number gets auto TRX number
+        $outlet = Outlet::first();
+        $cashier = User::where('email', 'kasir@posputri.test')->first();
+        $service = app(TransactionService::class);
+        $trx = $service->syncTransaction([
+            'outlet_id' => $outlet->id,
+            'cashier_id' => $cashier->id,
+            'subtotal' => 5000,
+            'total' => 5000,
+            'items' => [
+                [
+                    'product_id' => $createdProduct->id,
+                    'quantity' => 1,
+                    'price' => 2000,
+                ],
+            ],
+        ]);
+
+        $this->assertNotEmpty($trx->transaction_number);
+        $this->assertMatchesRegularExpression('/^TRX-\d{8}-[A-Z0-9]{4}$/', $trx->transaction_number);
     }
 }

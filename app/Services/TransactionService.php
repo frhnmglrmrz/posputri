@@ -39,7 +39,7 @@ class TransactionService
             $outletId = $data['outlet_id'];
             $outlet = Outlet::findOrFail($outletId);
 
-            $transactionNumber = $data['transaction_number'] ?? ('POS-'.date('YmdHis').'-'.strtoupper(Str::random(4)));
+            $transactionNumber = $data['transaction_number'] ?? Transaction::generateNextNumber();
 
             $transaction = Transaction::create([
                 'uuid' => $uuid,

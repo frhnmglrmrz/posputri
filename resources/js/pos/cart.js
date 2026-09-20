@@ -11,7 +11,7 @@ export function createPosComponent(config = {}) {
         cashierId: config.cashierId || 1,
         cashierName: config.cashierName || 'Kasir',
         shiftId: config.shiftId || null,
-        deviceUuid: config.deviceUuid || (localStorage.getItem('pos:device_uuid') || 'POS-DEVICE-01'),
+        deviceUuid: config.deviceUuid || (localStorage.getItem('pos:device_uuid') || 'BM-DEVICE-01'),
 
         // Master data in memory (sourced from IndexedDB)
         products: [],
@@ -257,7 +257,7 @@ export function createPosComponent(config = {}) {
             const now = new Date();
             const dateStr = now.toISOString().slice(0, 10).replace(/-/g, '');
             const randCode = Math.floor(1000 + Math.random() * 9000);
-            const tempNumber = `POS-${dateStr}-${randCode}`;
+            const tempNumber = `TRX-${dateStr}-${randCode}`;
 
             const transactionData = {
                 uuid: txUuid,

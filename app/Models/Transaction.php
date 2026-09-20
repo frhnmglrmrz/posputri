@@ -10,12 +10,32 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Str;
 
 #[Fillable(['uuid', 'transaction_number', 'outlet_id', 'device_id', 'device_uuid', 'cashier_id', 'shift_id', 'customer_id', 'subtotal', 'discount', 'tax', 'total', 'paid_amount', 'change_amount', 'status', 'transaction_at', 'synced_at', 'notes'])]
 class Transaction extends Model
 {
     /** @use HasFactory<TransactionFactory> */
     use HasCustomUuid, HasFactory;
+
+    protected static function booted(): void
+    {
+        static::creating(function (Transaction $transaction): void {
+            if (empty($transaction->transaction_number)) {
+                $transaction->transaction_number = static::generateNextNumber();
+            }
+        });
+    }
+
+    public static function generateNextNumber(): string
+    {
+        $prefix = 'TRX-'.date('Ymd').'-';
+        do {
+            $number = $prefix.strtoupper(Str::random(4));
+        } while (static::where('transaction_number', $number)->exists());
+
+        return $number;
+    }
 
     /**
      * Get the attributes that should be cast.
