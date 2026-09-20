@@ -427,7 +427,7 @@
                 <p class="text-sm text-slate-600 mt-2">Pilih salah satu peran di bawah ini untuk menguji antarmuka dan hak akses yang disesuaikan secara spesifik.</p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 max-w-7xl mx-auto">
                 
                 <!-- Role: Admin -->
                 <div class="p-6 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col justify-between shadow-sm">
@@ -479,6 +479,33 @@
                         <input type="hidden" name="password" value="password">
                         <button type="submit" class="w-full py-2.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs transition shadow-sm active:scale-98">
                             Masuk Sebagai Supervisor →
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Role: Inventory / Gudang -->
+                <div class="p-6 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col justify-between shadow-sm">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="px-2.5 py-1 rounded-md bg-cyan-100 text-cyan-900 text-xs font-mono font-bold">ROLE: INVENTORY</span>
+                            <span class="text-[10px] text-slate-500 font-mono font-semibold">Warehouse</span>
+                        </div>
+                        <h4 class="text-lg font-bold text-slate-900 mb-2">Staff Gudang & Logistik</h4>
+                        <p class="text-xs text-slate-600 mb-4 leading-relaxed">
+                            Input produk baru, barcode, varian harga, kategori barang, dan penyesuaian stok masuk atau stok opname fisik.
+                        </p>
+                        <div class="p-3 rounded-lg bg-white font-mono text-xs space-y-1 text-slate-700 border border-slate-200">
+                            <div>Email: <span class="text-slate-900 font-bold">gudang@posputri.test</span></div>
+                            <div>Password: <span class="text-emerald-700 font-bold">password</span></div>
+                        </div>
+                    </div>
+
+                    <form method="POST" action="{{ route('login') }}" class="mt-5">
+                        @csrf
+                        <input type="hidden" name="email" value="gudang@posputri.test">
+                        <input type="hidden" name="password" value="password">
+                        <button type="submit" class="w-full py-2.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs transition shadow-sm active:scale-98">
+                            Masuk Sebagai Gudang →
                         </button>
                     </form>
                 </div>

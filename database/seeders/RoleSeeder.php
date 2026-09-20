@@ -34,8 +34,22 @@ class RoleSeeder extends Seeder
             'view-basic-reports',
         ]);
 
+        $inventoryPermissions = [
+            'search-product',
+            'scan-barcode',
+            'manage-products',
+            'manage-categories',
+            'manage-inventory',
+            'manage-prices',
+            'view-inventory',
+            'adjust-stock',
+        ];
+
         $cashierRole = Role::firstOrCreate(['name' => 'Cashier', 'guard_name' => 'web']);
         $cashierRole->syncPermissions($cashierPermissions);
+
+        $inventoryRole = Role::firstOrCreate(['name' => 'Inventory', 'guard_name' => 'web']);
+        $inventoryRole->syncPermissions($inventoryPermissions);
 
         $supervisorRole = Role::firstOrCreate(['name' => 'Supervisor', 'guard_name' => 'web']);
         $supervisorRole->syncPermissions($supervisorPermissions);

@@ -51,5 +51,17 @@ class AdminSeeder extends Seeder
             ]
         );
         $cashier->syncRoles(['Cashier']);
+
+        // 4. Inventory / Staff Gudang (Input Barang & Stok)
+        $inventory = User::firstOrCreate(
+            ['email' => 'gudang@posputri.test'],
+            [
+                'name' => 'Staff Gudang',
+                'password' => Hash::make('password'),
+                'outlet_id' => $outlet?->id,
+                'is_active' => true,
+            ]
+        );
+        $inventory->syncRoles(['Inventory']);
     }
 }

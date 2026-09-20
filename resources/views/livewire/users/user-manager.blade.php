@@ -56,7 +56,7 @@
                         <td class="px-6 py-4">
                             @foreach($user->roles as $roleItem)
                             <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold
-                                {{ $roleItem->name === 'Admin' ? 'bg-slate-900 text-white' : ($roleItem->name === 'Supervisor' ? 'bg-amber-50 text-amber-800 border border-amber-300' : 'bg-emerald-50 text-emerald-800 border border-emerald-300') }}">
+                                {{ $roleItem->name === 'Admin' ? 'bg-slate-900 text-white' : ($roleItem->name === 'Supervisor' ? 'bg-amber-50 text-amber-800 border border-amber-300' : ($roleItem->name === 'Inventory' ? 'bg-cyan-50 text-cyan-800 border border-cyan-300' : 'bg-emerald-50 text-emerald-800 border border-emerald-300')) }}">
                                 {{ $roleItem->name }}
                             </span>
                             @endforeach

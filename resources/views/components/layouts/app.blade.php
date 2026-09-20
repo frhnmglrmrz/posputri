@@ -39,14 +39,16 @@
                             Dashboard
                         </a>
 
-                        <!-- 2. Terminal POS -->
+                        <!-- 2. Terminal POS (Cashier, Supervisor, Admin) -->
+                        @hasanyrole('Admin|Supervisor|Cashier')
                         <a href="{{ route('pos.index') }}" class="px-3 py-1.5 rounded-lg text-emerald-800 bg-emerald-50 border border-emerald-300 hover:bg-emerald-100 font-bold flex items-center gap-1.5 transition active:scale-98">
                             <span class="w-2 h-2 rounded-full bg-emerald-600 animate-pulse"></span>
                             Terminal POS
                         </a>
+                        @endhasanyrole
 
-                        <!-- 3. Sub-Nav: Katalog & Stok (Supervisor & Admin) -->
-                        @hasanyrole('Admin|Supervisor')
+                        <!-- 3. Sub-Nav: Katalog & Stok (Inventory, Supervisor, Admin) -->
+                        @hasanyrole('Admin|Supervisor|Inventory')
                         <div class="relative" x-data="{ open: false }" @click.outside="open = false" @close.stop="open = false">
                             <button type="button" @click="open = !open"
                                 class="px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 {{ (request()->routeIs('products.*') || request()->routeIs('categories.*') || request()->routeIs('inventory.*')) ? 'bg-slate-100 text-slate-900 border border-slate-300 font-bold' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900' }}">
@@ -80,7 +82,8 @@
                         </div>
                         @endhasanyrole
 
-                        <!-- 4. Sub-Nav: Operasional (All Roles) -->
+                        <!-- 4. Sub-Nav: Operasional (Cashier, Supervisor, Admin) -->
+                        @hasanyrole('Admin|Supervisor|Cashier')
                         <div class="relative" x-data="{ open: false }" @click.outside="open = false" @close.stop="open = false">
                             <button type="button" @click="open = !open"
                                 class="px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 {{ (request()->routeIs('transactions.*') || request()->routeIs('shifts.*') || request()->routeIs('customers.*')) ? 'bg-slate-100 text-slate-900 border border-slate-300 font-bold' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900' }}">
@@ -112,6 +115,7 @@
                                 </a>
                             </div>
                         </div>
+                        @endhasanyrole
 
                         <!-- 5. Sub-Nav: Laporan & Data (Supervisor & Admin) -->
                         @hasanyrole('Admin|Supervisor')
@@ -246,13 +250,15 @@
                 <a href="{{ route('dashboard') }}" class="p-2.5 rounded-lg text-center text-xs font-bold {{ request()->routeIs('dashboard') ? 'bg-slate-100 text-slate-900 border border-slate-300' : 'bg-slate-50 text-slate-700 border border-slate-200' }}">
                     Dashboard
                 </a>
+                @hasanyrole('Admin|Supervisor|Cashier')
                 <a href="{{ route('pos.index') }}" class="p-2.5 rounded-lg text-center text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-300 flex items-center justify-center gap-1.5">
                     <span class="w-2 h-2 rounded-full bg-emerald-600 animate-pulse"></span>
                     Terminal POS
                 </a>
+                @endhasanyrole
             </div>
 
-            @hasanyrole('Admin|Supervisor')
+            @hasanyrole('Admin|Supervisor|Inventory')
             <div class="pt-2 border-t border-slate-100">
                 <div class="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400 mb-1.5">Katalog & Stok</div>
                 <div class="grid grid-cols-3 gap-1.5 text-xs">
@@ -269,6 +275,7 @@
             </div>
             @endhasanyrole
 
+            @hasanyrole('Admin|Supervisor|Cashier')
             <div class="pt-2 border-t border-slate-100">
                 <div class="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400 mb-1.5">Operasional Kasir</div>
                 <div class="grid grid-cols-3 gap-1.5 text-xs">
@@ -283,6 +290,7 @@
                     </a>
                 </div>
             </div>
+            @endhasanyrole
 
             @hasanyrole('Admin|Supervisor')
             <div class="pt-2 border-t border-slate-100">

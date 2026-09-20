@@ -17,12 +17,21 @@
         </div>
 
         <div class="flex items-center gap-3">
+            @hasanyrole('Admin|Supervisor|Cashier')
             <a href="{{ route('pos.index') }}" class="px-4 py-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-xs transition flex items-center gap-1.5 active:scale-98">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                 </svg>
                 <span>Buka Terminal Kasir</span>
             </a>
+            @else
+            <a href="{{ route('products.index') }}" class="px-4 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-xs transition flex items-center gap-1.5 active:scale-98">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                </svg>
+                <span>Kelola Produk</span>
+            </a>
+            @endhasanyrole
         </div>
     </div>
 
@@ -31,6 +40,8 @@
         @include('dashboard._cashier')
     @elseif(($roleView ?? 'admin') === 'supervisor')
         @include('dashboard._supervisor')
+    @elseif(($roleView ?? 'admin') === 'inventory')
+        @include('dashboard._inventory')
     @else
         @include('dashboard._admin')
     @endif

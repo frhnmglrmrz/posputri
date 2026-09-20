@@ -139,17 +139,52 @@ class PhaseOneFoundationTest extends TestCase
         $admin = User::where('email', 'admin@posputri.test')->first();
         $supervisor = User::where('email', 'supervisor@posputri.test')->first();
         $cashier = User::where('email', 'kasir@posputri.test')->first();
+        $inventory = User::where('email', 'gudang@posputri.test')->first();
 
         $this->assertTrue($admin->hasRole('Admin'));
         $this->assertTrue($supervisor->hasRole('Supervisor'));
         $this->assertTrue($cashier->hasRole('Cashier'));
+        $this->assertTrue($inventory->hasRole('Inventory'));
 
         $this->assertTrue($cashier->hasPermissionTo('access-pos'));
         $this->assertTrue($cashier->hasPermissionTo('checkout'));
         $this->assertFalse($cashier->hasPermissionTo('manage-users'));
 
+        $this->assertTrue($inventory->hasPermissionTo('manage-products'));
+        $this->assertTrue($inventory->hasPermissionTo('manage-categories'));
+        $this->assertTrue($inventory->hasPermissionTo('manage-inventory'));
+        $this->assertTrue($inventory->hasPermissionTo('adjust-stock'));
+        $this->assertFalse($inventory->hasPermissionTo('access-pos'));
+        $this->assertFalse($inventory->hasPermissionTo('manage-users'));
+
         $this->assertTrue($admin->hasPermissionTo('manage-users'));
         $this->assertTrue($admin->hasPermissionTo('access-pos'));
+    }
+
+    /**
+     * Test inventory staff can access catalog and dashboard, but not POS, shifts, or admin routes.
+     */
+    public function test_inventory_staff_access_permissions(): void
+    {
+        $this->seed(DatabaseSeeder::class);
+        $inventory = User::where('email', 'gudang@posputri.test')->first();
+
+        // Can access dashboard with inventory view
+        $dashboardResponse = $this->actingAs($inventory)->get(route('dashboard'));
+        $dashboardResponse->assertOk()
+            ->assertSee('Staff Gudang')
+            ->assertSee('Total Katalog Produk');
+
+        // Can access products, categories, inventory
+        $this->actingAs($inventory)->get(route('products.index'))->assertOk();
+        $this->actingAs($inventory)->get(route('categories.index'))->assertOk();
+        $this->actingAs($inventory)->get(route('inventory.index'))->assertOk();
+
+        // Cannot access POS or Cashier Shifts or Admin routes
+        $this->actingAs($inventory)->get(route('pos.index'))->assertForbidden();
+        $this->actingAs($inventory)->get(route('shifts.index'))->assertForbidden();
+        $this->actingAs($inventory)->get(route('reports.index'))->assertForbidden();
+        $this->actingAs($inventory)->get(route('users.index'))->assertForbidden();
     }
 
     /**

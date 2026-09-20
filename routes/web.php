@@ -31,20 +31,26 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // POS Kasir (Offline-First Alpine + Dexie)
-    Route::get('/pos', function () {
+    Route::middleware('role:Admin|Supervisor|Cashier')->get('/pos', function () {
         return view('pos.index');
     })->name('pos.index');
 
-    // Operational routes accessible to all authenticated staff (Cashier, Supervisor, Admin)
-    Route::get('/shifts', ShiftManager::class)->name('shifts.index');
-    Route::get('/transactions', TransactionHistory::class)->name('transactions.index');
-    Route::get('/customers', CustomerManager::class)->name('customers.index');
+    // Operational routes (Cashier, Supervisor, Admin)
+    Route::middleware('role:Admin|Supervisor|Cashier')->group(function () {
+        Route::get('/shifts', ShiftManager::class)->name('shifts.index');
+        Route::get('/transactions', TransactionHistory::class)->name('transactions.index');
+        Route::get('/customers', CustomerManager::class)->name('customers.index');
+    });
 
-    // Supervisor & Admin routes
-    Route::middleware('role:Admin|Supervisor')->group(function () {
+    // Inventory, Supervisor & Admin routes (Input Barang, Kategori & Stok Opname)
+    Route::middleware('role:Admin|Supervisor|Inventory')->group(function () {
         Route::get('/products', ProductManager::class)->name('products.index');
         Route::get('/categories', CategoryManager::class)->name('categories.index');
         Route::get('/inventory', InventoryManager::class)->name('inventory.index');
+    });
+
+    // Supervisor & Admin routes (Laporan & Sinkronisasi)
+    Route::middleware('role:Admin|Supervisor')->group(function () {
         Route::get('/reports', ReportManager::class)->name('reports.index');
         Route::get('/sync', SyncCenter::class)->name('sync.index');
     });

@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Enums\ShiftStatus;
 use App\Enums\TransactionStatus;
+use App\Models\Category;
 use App\Models\Device;
 use App\Models\Outlet;
 use App\Models\Payment;
 use App\Models\Product;
 use App\Models\Shift;
 use App\Models\Stock;
+use App\Models\StockMovement;
 use App\Models\SyncLog;
 use App\Models\Transaction;
 use App\Models\User;
@@ -119,7 +121,57 @@ class DashboardController extends Controller
         }
 
         // -------------------------------------------------------------
-        // 3. ADMINISTRATOR ROLE VIEW
+        // 3. INVENTORY / WAREHOUSE ROLE VIEW
+        // -------------------------------------------------------------
+        if ($user->hasRole('Inventory') && ! $user->hasAnyRole(['Admin', 'Supervisor'])) {
+            $outletId = $outlet?->id;
+
+            $totalProducts = Product::where('is_active', true)->count();
+            $totalCategories = Category::count();
+            $totalStock = (int) Stock::when($outletId, fn ($q) => $q->where('outlet_id', $outletId))->sum('quantity');
+            $lowStockCount = Stock::when($outletId, fn ($q) => $q->where('outlet_id', $outletId))
+                ->where('quantity', '>', 0)
+                ->where('quantity', '<=', 10)
+                ->count();
+            $outOfStockCount = Stock::when($outletId, fn ($q) => $q->where('outlet_id', $outletId))
+                ->where('quantity', '<=', 0)
+                ->count();
+
+            $lowStockProducts = Stock::when($outletId, fn ($q) => $q->where('outlet_id', $outletId))
+                ->where('quantity', '<=', 10)
+                ->with(['product.category'])
+                ->orderBy('quantity', 'asc')
+                ->take(8)
+                ->get();
+
+            $recentMovements = StockMovement::when($outletId, fn ($q) => $q->where('outlet_id', $outletId))
+                ->with(['product'])
+                ->latest()
+                ->take(6)
+                ->get();
+
+            $recentProducts = Product::with(['category', 'stocks' => fn ($q) => $outletId ? $q->where('outlet_id', $outletId) : $q])
+                ->latest()
+                ->take(6)
+                ->get();
+
+            return view('dashboard', [
+                'roleView' => 'inventory',
+                'user' => $user,
+                'outlet' => $outlet,
+                'totalProducts' => $totalProducts,
+                'totalCategories' => $totalCategories,
+                'totalStock' => $totalStock,
+                'lowStockCount' => $lowStockCount,
+                'outOfStockCount' => $outOfStockCount,
+                'lowStockProducts' => $lowStockProducts,
+                'recentMovements' => $recentMovements,
+                'recentProducts' => $recentProducts,
+            ]);
+        }
+
+        // -------------------------------------------------------------
+        // 4. ADMINISTRATOR ROLE VIEW
         // -------------------------------------------------------------
         $todayRevenue = (float) Transaction::where('status', TransactionStatus::Completed)
             ->whereDate('transaction_at', Carbon::today())
