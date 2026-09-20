@@ -2,7 +2,7 @@
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div>
             <h1 class="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">Katalog Produk</h1>
-            <p class="text-xs text-slate-500 mt-1">Kelola data produk, harga jual, barcode, dan stok untuk POS</p>
+            <p class="text-xs text-slate-500 mt-1">Kelola data produk, harga jual, dan stok untuk POS</p>
         </div>
         <button wire:click="openCreateModal"
             class="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-xs transition flex items-center gap-1.5 self-start sm:self-auto active:scale-98">
@@ -16,7 +16,7 @@
     <!-- Filters -->
     <div class="flex flex-col sm:flex-row gap-3 mb-4">
         <div class="flex-1 max-w-sm">
-            <input type="text" wire:model.live.debounce.300ms="search" placeholder="Cari nama, SKU, atau barcode..."
+            <input type="text" wire:model.live.debounce.300ms="search" placeholder="Cari nama atau SKU produk..."
                 class="w-full px-3.5 py-2 rounded-xl bg-white border border-slate-300 text-slate-900 placeholder-slate-400 text-xs focus:outline-none focus:ring-2 focus:ring-emerald-500 shadow-2xs">
         </div>
         <div class="w-48">
@@ -35,7 +35,7 @@
             <table class="w-full text-left text-xs text-slate-700">
                 <thead class="bg-slate-50 text-slate-600 uppercase tracking-wider text-[10px] font-semibold border-b border-slate-200">
                     <tr>
-                        <th class="px-4 py-3">SKU / Barcode</th>
+                        <th class="px-4 py-3">Kode SKU</th>
                         <th class="px-4 py-3">Nama Produk</th>
                         <th class="px-4 py-3">Kategori</th>
                         <th class="px-4 py-3">Harga Beli</th>
@@ -50,7 +50,6 @@
                         <tr class="hover:bg-slate-50/80 transition">
                             <td class="px-4 py-3 font-mono">
                                 <div class="font-bold text-slate-900">{{ $product->sku }}</div>
-                                <div class="text-[10px] text-slate-400">{{ $product->barcode ?: '-' }}</div>
                             </td>
                             <td class="px-4 py-3 font-semibold text-slate-900">{{ $product->name }}</td>
                             <td class="px-4 py-3">
@@ -119,17 +118,10 @@
                         @error('name') <span class="text-rose-600 mt-1 block">{{ $message }}</span> @enderror
                     </div>
 
-                    <div class="grid grid-cols-2 gap-3">
-                        <div>
-                            <label class="block font-semibold text-slate-700 mb-1">SKU</label>
-                            <input type="text" wire:model="sku" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-slate-900 font-mono focus:outline-none focus:ring-2 focus:ring-emerald-500">
-                            @error('sku') <span class="text-rose-600 mt-1 block">{{ $message }}</span> @enderror
-                        </div>
-                        <div>
-                            <label class="block font-semibold text-slate-700 mb-1">Barcode (Opsional)</label>
-                            <input type="text" wire:model="barcode" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-slate-900 font-mono focus:outline-none focus:ring-2 focus:ring-emerald-500">
-                            @error('barcode') <span class="text-rose-600 mt-1 block">{{ $message }}</span> @enderror
-                        </div>
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">Kode SKU Produk</label>
+                        <input type="text" wire:model="sku" placeholder="Contoh: PRD-00001" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-slate-900 font-mono focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                        @error('sku') <span class="text-rose-600 mt-1 block">{{ $message }}</span> @enderror
                     </div>
 
                     <div class="grid grid-cols-2 gap-3">

@@ -74,7 +74,7 @@
                 </div>
                 <div>
                     <div class="font-bold text-xs text-slate-900 group-hover:text-blue-700 transition">Input & Kelola Produk</div>
-                    <div class="text-[11px] text-slate-500">Tambah SKU, barcode, harga beli & jual</div>
+                    <div class="text-[11px] text-slate-500">Tambah SKU, harga beli & jual</div>
                 </div>
             </div>
             <span class="text-slate-400 group-hover:text-blue-700 transition text-sm">&rarr;</span>
@@ -207,7 +207,7 @@
                             <tr class="hover:bg-slate-50/80 transition">
                                 <td class="px-3 py-2.5">
                                     <div class="font-semibold text-slate-900">{{ $prod->name }}</div>
-                                    <div class="text-[10px] font-mono text-slate-400">{{ $prod->sku ?? $prod->barcode ?? '-' }}</div>
+                                    <div class="text-[10px] font-mono text-slate-400">{{ $prod->sku }}</div>
                                 </td>
                                 <td class="px-3 py-2.5 font-mono text-slate-800 font-semibold">
                                     Rp{{ number_format($prod->selling_price, 0, ',', '.') }}

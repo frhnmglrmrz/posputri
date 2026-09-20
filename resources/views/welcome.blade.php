@@ -328,7 +328,7 @@
                         <span class="text-[11px] font-mono font-bold uppercase tracking-wider text-slate-700">Pilar Kedua</span>
                         <h3 class="text-xl font-bold text-slate-900 mt-1 mb-3">Berani (Bold)</h3>
                         <p class="text-sm text-slate-600 leading-relaxed">
-                            Kecepatan dan ergonomi kasir tanpa kompromi. Antarmuka dirancang dengan kepadatan informasi optimal, ukuran sentuh standar 44px, pemindai barcode USB instan, dan numpad taktil. Tanpa animasi lambat atau komponen dekoratif yang membuang waktu antrean kasir.
+                            Kecepatan dan ergonomi kasir tanpa kompromi. Antarmuka dirancang dengan kepadatan informasi optimal, ukuran sentuh standar 44px, pencarian cepat SKU, dan tombol numpad taktil. Tanpa animasi lambat atau komponen dekoratif yang membuang waktu antrean kasir.
                         </p>
                     </div>
 
@@ -492,7 +492,7 @@
                         </div>
                         <h4 class="text-lg font-bold text-slate-900 mb-2">Staff Gudang & Logistik</h4>
                         <p class="text-xs text-slate-600 mb-4 leading-relaxed">
-                            Input produk baru, barcode, varian harga, kategori barang, dan penyesuaian stok masuk atau stok opname fisik.
+                            Input produk baru, penetapan harga, kategori barang, dan penyesuaian stok masuk atau stok opname fisik.
                         </p>
                         <div class="p-3 rounded-lg bg-white font-mono text-xs space-y-1 text-slate-700 border border-slate-200">
                             <div>Email: <span class="text-slate-900 font-bold">gudang@berkahmart.test</span></div>

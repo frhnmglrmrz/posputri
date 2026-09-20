@@ -16,11 +16,11 @@
         <div class="p-3.5 border-b border-slate-200 bg-slate-50 flex flex-col sm:flex-row items-center gap-3">
             <div class="relative flex-1 w-full">
                 <input type="text"
-                    id="pos-barcode-input"
+                    id="pos-search-input"
                     x-model="searchQuery"
                     @input="filterProducts()"
-                    @keydown.enter.prevent="if (searchQuery.trim()) { handleBarcodeScanned(searchQuery.trim()); searchQuery = ''; filterProducts(); }"
-                    placeholder="Cari produk berdasarkan nama, SKU, atau scan barcode scanner USB..."
+                    @keydown.enter.prevent="if (searchQuery.trim()) { handleQuickAddBySku(searchQuery.trim()); searchQuery = ''; filterProducts(); }"
+                    placeholder="Cari produk berdasarkan nama atau SKU (tekan Enter untuk tambah cepat)..."
                     class="w-full pl-10 pr-4 py-2 bg-white border border-slate-300 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm font-medium transition shadow-2xs">
                 <div class="absolute left-3 top-2.5 text-slate-400">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -115,7 +115,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                     </svg>
                     <span class="font-semibold text-slate-600">Keranjang Kosong</span>
-                    <span class="text-[11px] text-slate-400 mt-0.5">Sentuh produk di kiri atau scan barcode</span>
+                    <span class="text-[11px] text-slate-400 mt-0.5">Sentuh produk di kiri atau cari berdasarkan SKU</span>
                 </div>
             </template>
 

@@ -508,23 +508,22 @@ class OfflinePosSystemTest extends TestCase
     }
 
     /**
-     * Test products have valid EAN-13 barcodes and can be searched by barcode.
+     * Test products can be searched by SKU via livewire product manager.
      */
-    public function test_products_have_barcodes_and_can_be_queried_by_barcode(): void
+    public function test_products_can_be_queried_by_sku(): void
     {
-        $product = Product::whereNotNull('barcode')->first();
+        $product = Product::first();
         $this->assertNotNull($product);
-        $this->assertMatchesRegularExpression('/^[0-9]+$/', $product->barcode);
 
-        // 1. Direct model query by barcode
-        $found = Product::where('barcode', $product->barcode)->first();
+        // 1. Direct model query by SKU
+        $found = Product::where('sku', $product->sku)->first();
         $this->assertEquals($product->id, $found->id);
 
-        // 2. Search by barcode via Staff Inventory livewire manager
-        $inventory = User::where('email', 'gudang@posputri.test')->first();
+        // 2. Search by SKU via Staff Inventory livewire manager
+        $inventory = User::where('email', 'gudang@berkahmart.test')->first();
         Livewire::actingAs($inventory)
             ->test(ProductManager::class)
-            ->set('search', $product->barcode)
+            ->set('search', $product->sku)
             ->assertSee($product->name)
             ->assertSee($product->sku);
     }

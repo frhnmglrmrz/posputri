@@ -86,7 +86,7 @@
                 <div class="text-[11px] font-mono font-bold uppercase tracking-wider text-emerald-700 mb-1">Terminal Kasir</div>
                 <h3 class="text-lg font-bold text-slate-900">Buka Antarmuka POS</h3>
                 <p class="text-xs text-slate-600 mt-1 leading-relaxed">
-                    Mulai melayani pembayaran pelanggan. Dukungan pencarian cepat (&lt;30ms) & pemindaian barcode USB secara offline.
+                    Mulai melayani pembayaran pelanggan. Dukungan pencarian cepat (&lt;30ms) nama & SKU produk secara offline.
                 </p>
             </div>
 
@@ -174,11 +174,11 @@
         <div class="p-4 rounded-xl bg-white border border-slate-200 shadow-sm">
             <div class="font-bold text-slate-800 mb-1 flex items-center gap-1.5">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
-                <span>Barcode Scanner USB</span>
+                <span>Pencarian Cepat SKU</span>
             </div>
-            <p class="text-slate-600 leading-relaxed">Arahkan scanner ke barcode produk, produk otomatis masuk ke keranjang belanja tanpa perlu klik mouse.</p>
+            <p class="text-slate-600 leading-relaxed">Ketik nama atau kode SKU produk di terminal dan tekan Enter untuk langsung menambahkan barang ke keranjang.</p>
         </div>
 
         <div class="p-4 rounded-xl bg-white border border-slate-200 shadow-sm">

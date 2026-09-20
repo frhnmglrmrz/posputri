@@ -120,8 +120,7 @@ export function createPosComponent(config = {}) {
                 if (!query) return true;
 
                 return (p.name && p.name.toLowerCase().includes(query))
-                    || (p.sku && p.sku.toLowerCase().includes(query))
-                    || (p.barcode && p.barcode.toLowerCase().includes(query));
+                    || (p.sku && p.sku.toLowerCase().includes(query));
             });
         },
 
@@ -130,15 +129,19 @@ export function createPosComponent(config = {}) {
             this.filterProducts();
         },
 
-        handleBarcodeScanned(barcode) {
-            const cleanBarcode = barcode.trim();
-            const found = this.products.find(p => p.barcode === cleanBarcode || p.sku === cleanBarcode);
+        handleQuickAddBySku(code) {
+            const cleanCode = code.trim().toLowerCase();
+            const found = this.products.find(p => (p.sku && p.sku.toLowerCase() === cleanCode) || (p.name && p.name.toLowerCase() === cleanCode));
             if (found) {
                 this.addToCart(found);
                 this.showToast(`Produk ditambahkan: ${found.name}`);
             } else {
-                this.showToast(`Barcode ${cleanBarcode} tidak ditemukan!`, 'error');
+                this.showToast(`Produk / SKU "${code.trim()}" tidak ditemukan!`, 'error');
             }
+        },
+
+        handleBarcodeScanned(barcode) {
+            this.handleQuickAddBySku(barcode);
         },
 
         // Cart Actions

@@ -27,8 +27,6 @@ class ProductManager extends Component
 
     public string $sku = '';
 
-    public string $barcode = '';
-
     public string $name = '';
 
     public float $purchase_price = 0;
@@ -46,7 +44,6 @@ class ProductManager extends Component
         return [
             'category_id' => ['required', 'exists:categories,id'],
             'sku' => ['required', 'string', 'max:100', 'unique:products,sku,'.$this->productId],
-            'barcode' => ['nullable', 'string', 'max:100'],
             'name' => ['required', 'string', 'max:255'],
             'purchase_price' => ['required', 'numeric', 'min:0'],
             'selling_price' => ['required', 'numeric', 'min:0'],
@@ -57,7 +54,7 @@ class ProductManager extends Component
 
     public function openCreateModal(): void
     {
-        $this->reset(['productId', 'category_id', 'sku', 'barcode', 'name', 'purchase_price', 'selling_price', 'tax_rate', 'initial_stock', 'is_active']);
+        $this->reset(['productId', 'category_id', 'sku', 'name', 'purchase_price', 'selling_price', 'tax_rate', 'initial_stock', 'is_active']);
         $this->sku = 'PRD-'.strtoupper(Str::random(6));
         $this->is_active = true;
         $this->resetErrorBag();
@@ -70,7 +67,6 @@ class ProductManager extends Component
         $this->productId = $product->id;
         $this->category_id = $product->category_id;
         $this->sku = $product->sku;
-        $this->barcode = (string) ($product->barcode ?? '');
         $this->name = $product->name;
         $this->purchase_price = (float) $product->purchase_price;
         $this->selling_price = (float) $product->selling_price;
@@ -111,7 +107,7 @@ class ProductManager extends Component
         }
 
         $this->isModalOpen = false;
-        $this->reset(['productId', 'category_id', 'sku', 'barcode', 'name', 'purchase_price', 'selling_price', 'tax_rate', 'initial_stock']);
+        $this->reset(['productId', 'category_id', 'sku', 'name', 'purchase_price', 'selling_price', 'tax_rate', 'initial_stock']);
     }
 
     public function delete(int $id): void
@@ -137,8 +133,7 @@ class ProductManager extends Component
             ->when($this->search, function ($query): void {
                 $query->where(function ($q): void {
                     $q->where('name', 'like', "%{$this->search}%")
-                        ->orWhere('sku', 'like', "%{$this->search}%")
-                        ->orWhere('barcode', 'like', "%{$this->search}%");
+                        ->orWhere('sku', 'like', "%{$this->search}%");
                 });
             })
             ->latest()
