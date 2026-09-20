@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ $title ?? config('app.name', 'POS Putri — Offline-First POS') }}</title>
+    <title>{{ $title ?? config('app.name', 'Berkah Mart — Offline-First POS') }}</title>
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link rel="manifest" href="/manifest.json">
@@ -27,7 +27,7 @@
                     <a href="{{ route('dashboard') }}" class="flex items-center gap-2.5 group">
                         <x-application-logo class="w-8 h-8 rounded-xl shadow-xs group-hover:scale-105 transition duration-150" />
                         <div class="flex flex-col">
-                            <span class="font-bold text-sm tracking-tight text-slate-900 leading-none group-hover:text-emerald-700 transition">POS PUTRI</span>
+                            <span class="font-bold text-sm tracking-tight text-slate-900 leading-none group-hover:text-emerald-700 transition">BERKAH MART</span>
                             <span class="text-[10px] font-mono font-semibold text-slate-400 leading-tight mt-0.5 tracking-wider">OFFLINE-FIRST</span>
                         </div>
                     </a>

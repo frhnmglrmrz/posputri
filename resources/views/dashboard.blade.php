@@ -12,7 +12,7 @@
                 </span>
             </div>
             <p class="text-xs text-slate-500">
-                Outlet Operasional: <strong class="text-slate-800">{{ auth()->user()->outlet->name ?? 'Outlet Utama' }}</strong> — Sistem POS Offline-First POS Putri.
+                Outlet Operasional: <strong class="text-slate-800">{{ auth()->user()->outlet->name ?? 'Outlet Utama' }}</strong> — Sistem POS Offline-First Berkah Mart.
             </p>
         </div>
 

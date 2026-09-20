@@ -33,7 +33,7 @@ class PhaseOneFoundationTest extends TestCase
         $response = $this->get('/');
 
         $response->assertOk()
-            ->assertSee('POS PUTRI')
+            ->assertSee('BERKAH MART')
             ->assertSee('Terpercaya (Reliable)')
             ->assertSee('Berani (Bold)')
             ->assertSee('Transparan (Transparent)');
@@ -47,8 +47,8 @@ class PhaseOneFoundationTest extends TestCase
         $response = $this->get(route('login'));
 
         $response->assertOk()
-            ->assertSee('POS Putri Offline-First')
-            ->assertSee('admin@posputri.test');
+            ->assertSee('Berkah Mart Offline-First')
+            ->assertSee('admin@berkahmart.test');
     }
 
     /**

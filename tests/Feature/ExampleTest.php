@@ -15,6 +15,6 @@ class ExampleTest extends TestCase
         $response = $this->get('/');
 
         $response->assertOk()
-            ->assertSee('POS PUTRI');
+            ->assertSee('BERKAH MART');
     }
 }

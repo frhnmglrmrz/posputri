@@ -1,6 +1,6 @@
 {
-  "name": "POS Putri - Modern Offline-First POS",
-  "short_name": "POS Putri",
+  "name": "Berkah Mart - Modern Offline-First POS",
+  "short_name": "Berkah Mart",
   "start_url": "/pos",
   "scope": "/",
   "display": "standalone",

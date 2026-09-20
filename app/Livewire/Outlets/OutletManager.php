@@ -38,7 +38,7 @@ class OutletManager extends Component
     public string $device_name = '';
 
     // Settings
-    public string $receipt_header = 'POS PUTRI';
+    public string $receipt_header = 'BERKAH MART';
 
     public string $receipt_footer = 'Terima kasih atas kunjungan Anda!';
 
@@ -46,7 +46,7 @@ class OutletManager extends Component
 
     public function mount(): void
     {
-        $this->receipt_header = Setting::get('receipt_header', 'POS PUTRI');
+        $this->receipt_header = Setting::get('receipt_header', 'BERKAH MART');
         $this->receipt_footer = Setting::get('receipt_footer', 'Terima kasih atas kunjungan Anda!');
         $this->default_tax = (float) Setting::get('default_tax', 11.0);
     }

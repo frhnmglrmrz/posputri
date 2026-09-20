@@ -320,7 +320,7 @@
 
                 <div class="text-center text-[10px] text-slate-500 pt-1">
                     <p>Terima kasih atas kunjungan Anda!</p>
-                    <p class="text-[9px] text-slate-400 mt-1">POS Putri — Offline-First System</p>
+                    <p class="text-[9px] text-slate-400 mt-1">Berkah Mart — Offline-First System</p>
                 </div>
             </div>
 

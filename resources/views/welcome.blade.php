@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>POS Putri — Sistem Kasir Offline-First Terpercaya, Berani, & Transparan</title>
+    <title>Berkah Mart — Sistem Kasir Offline-First Terpercaya, Berani, & Transparan</title>
     <meta name="description" content="Sistem Point of Sale (POS) ritel modern offline-first yang menjamin operasional kasir tetap melaju tanpa hambatan internet. Audit shift transparan dan kendali multi-outlet terpercaya.">
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -26,7 +26,7 @@
                 <x-application-logo class="w-10 h-10 rounded-xl shadow-xs" />
                 <div class="flex flex-col">
                     <span class="font-bold tracking-tight text-base leading-none text-slate-900 flex items-center gap-2">
-                        POS PUTRI
+                        BERKAH MART
                         <span class="text-[10px] uppercase font-mono px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-800 border border-emerald-300 font-semibold tracking-wide">v1.0 Offline-First</span>
                     </span>
                     <span class="text-[11px] text-slate-500 font-medium leading-tight mt-0.5">Reliable • Bold • Transparent</span>
@@ -187,7 +187,7 @@
                         <span class="w-3 h-3 rounded-full bg-slate-300"></span>
                         <span class="w-3 h-3 rounded-full bg-slate-300"></span>
                         <span class="w-3 h-3 rounded-full bg-slate-300"></span>
-                        <span class="text-xs font-mono text-slate-700 ml-2 font-semibold">Terminal POS Putri — Register 01 (Outlet Utama)</span>
+                        <span class="text-xs font-mono text-slate-700 ml-2 font-semibold">Terminal Berkah Mart — Register 01 (Outlet Utama)</span>
                     </div>
 
                     <!-- Offline Mode Simulator Toggle -->
@@ -289,7 +289,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center max-w-2xl mx-auto mb-16">
                 <span class="text-xs font-mono font-bold uppercase tracking-wider text-emerald-700">Fondasi Sistem</span>
-                <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mt-2 tracking-tight">Tiga Nilai Inti POS Putri</h2>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mt-2 tracking-tight">Tiga Nilai Inti Berkah Mart</h2>
                 <p class="text-sm sm:text-base text-slate-600 mt-3">Dibangun tanpa kompromi untuk pemilik usaha yang membutuhkan ketahanan operasional, kecepatan eksekusi, dan akurasi keuangan mutlak.</p>
             </div>
 
@@ -441,14 +441,14 @@
                             Kendali penuh seluruh sistem: manajemen multi-outlet, penambahan staf kasir, pengaturan pajak, dan laporan laba-rugi.
                         </p>
                         <div class="p-3 rounded-lg bg-white font-mono text-xs space-y-1 text-slate-700 border border-slate-200">
-                            <div>Email: <span class="text-slate-900 font-bold">admin@posputri.test</span></div>
+                            <div>Email: <span class="text-slate-900 font-bold">admin@berkahmart.test</span></div>
                             <div>Password: <span class="text-emerald-700 font-bold">password</span></div>
                         </div>
                     </div>
 
                     <form method="POST" action="{{ route('login') }}" class="mt-5">
                         @csrf
-                        <input type="hidden" name="email" value="admin@posputri.test">
+                        <input type="hidden" name="email" value="admin@berkahmart.test">
                         <input type="hidden" name="password" value="password">
                         <button type="submit" class="w-full py-2.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs transition shadow-sm active:scale-98">
                             Masuk Sebagai Admin →
@@ -468,14 +468,14 @@
                             Manajemen inventaris, audit stok opname, persetujuan penutupan shift kasir, dan pantauan performa penjualan harian.
                         </p>
                         <div class="p-3 rounded-lg bg-white font-mono text-xs space-y-1 text-slate-700 border border-slate-200">
-                            <div>Email: <span class="text-slate-900 font-bold">supervisor@posputri.test</span></div>
+                            <div>Email: <span class="text-slate-900 font-bold">supervisor@berkahmart.test</span></div>
                             <div>Password: <span class="text-emerald-700 font-bold">password</span></div>
                         </div>
                     </div>
 
                     <form method="POST" action="{{ route('login') }}" class="mt-5">
                         @csrf
-                        <input type="hidden" name="email" value="supervisor@posputri.test">
+                        <input type="hidden" name="email" value="supervisor@berkahmart.test">
                         <input type="hidden" name="password" value="password">
                         <button type="submit" class="w-full py-2.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs transition shadow-sm active:scale-98">
                             Masuk Sebagai Supervisor →
@@ -495,14 +495,14 @@
                             Input produk baru, barcode, varian harga, kategori barang, dan penyesuaian stok masuk atau stok opname fisik.
                         </p>
                         <div class="p-3 rounded-lg bg-white font-mono text-xs space-y-1 text-slate-700 border border-slate-200">
-                            <div>Email: <span class="text-slate-900 font-bold">gudang@posputri.test</span></div>
+                            <div>Email: <span class="text-slate-900 font-bold">gudang@berkahmart.test</span></div>
                             <div>Password: <span class="text-emerald-700 font-bold">password</span></div>
                         </div>
                     </div>
 
                     <form method="POST" action="{{ route('login') }}" class="mt-5">
                         @csrf
-                        <input type="hidden" name="email" value="gudang@posputri.test">
+                        <input type="hidden" name="email" value="gudang@berkahmart.test">
                         <input type="hidden" name="password" value="password">
                         <button type="submit" class="w-full py-2.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs transition shadow-sm active:scale-98">
                             Masuk Sebagai Gudang →
@@ -522,14 +522,14 @@
                             Antarmuka kasir cepat, buka & tutup shift, transaksi tunai & non-tunai (QRIS), pencarian pelanggan, dan cetak struk thermal 58mm.
                         </p>
                         <div class="p-3 rounded-lg bg-white font-mono text-xs space-y-1 text-slate-700 border border-emerald-200">
-                            <div>Email: <span class="text-slate-900 font-bold">kasir@posputri.test</span></div>
+                            <div>Email: <span class="text-slate-900 font-bold">kasir@berkahmart.test</span></div>
                             <div>Password: <span class="text-emerald-700 font-bold">password</span></div>
                         </div>
                     </div>
 
                     <form method="POST" action="{{ route('login') }}" class="mt-5">
                         @csrf
-                        <input type="hidden" name="email" value="kasir@posputri.test">
+                        <input type="hidden" name="email" value="kasir@berkahmart.test">
                         <input type="hidden" name="password" value="password">
                         <button type="submit" class="w-full py-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs transition shadow-sm active:scale-98">
                             Masuk Sebagai Kasir (Mulai Jualan) →
@@ -546,7 +546,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
             <div class="flex items-center gap-2.5">
                 <x-application-logo class="w-6 h-6 rounded-lg" />
-                <span class="text-slate-900 font-bold">POS Putri v1.0</span>
+                <span class="text-slate-900 font-bold">Berkah Mart v1.0</span>
                 <span>— Dirancang untuk Kecepatan Kasir, Ketahanan Offline, dan Transparansi Data.</span>
             </div>
             <div class="flex items-center gap-6">

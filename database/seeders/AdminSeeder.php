@@ -16,52 +16,62 @@ class AdminSeeder extends Seeder
     {
         $outlet = Outlet::first();
 
-        // 1. Super Admin
-        $admin = User::firstOrCreate(
-            ['email' => 'admin@posputri.test'],
+        // 1. Primary Berkah Mart Accounts
+        $accounts = [
             [
+                'email' => 'admin@berkahmart.test',
                 'name' => 'Administrator',
-                'password' => Hash::make('password'),
-                'outlet_id' => $outlet?->id,
-                'is_active' => true,
-            ]
-        );
-        $admin->syncRoles(['Admin']);
-
-        // 2. Supervisor
-        $supervisor = User::firstOrCreate(
-            ['email' => 'supervisor@posputri.test'],
+                'role' => 'Admin',
+            ],
             [
+                'email' => 'supervisor@berkahmart.test',
                 'name' => 'Supervisor Toko',
-                'password' => Hash::make('password'),
-                'outlet_id' => $outlet?->id,
-                'is_active' => true,
-            ]
-        );
-        $supervisor->syncRoles(['Supervisor']);
-
-        // 3. Cashier
-        $cashier = User::firstOrCreate(
-            ['email' => 'kasir@posputri.test'],
+                'role' => 'Supervisor',
+            ],
             [
+                'email' => 'kasir@berkahmart.test',
                 'name' => 'Kasir 01',
-                'password' => Hash::make('password'),
-                'outlet_id' => $outlet?->id,
-                'is_active' => true,
-            ]
-        );
-        $cashier->syncRoles(['Cashier']);
-
-        // 4. Inventory / Staff Gudang (Input Barang & Stok)
-        $inventory = User::firstOrCreate(
-            ['email' => 'gudang@posputri.test'],
+                'role' => 'Cashier',
+            ],
             [
+                'email' => 'gudang@berkahmart.test',
                 'name' => 'Staff Gudang',
-                'password' => Hash::make('password'),
-                'outlet_id' => $outlet?->id,
-                'is_active' => true,
-            ]
-        );
-        $inventory->syncRoles(['Inventory']);
+                'role' => 'Inventory',
+            ],
+            // Fallback accounts for legacy sessions/tests
+            [
+                'email' => 'admin@posputri.test',
+                'name' => 'Administrator',
+                'role' => 'Admin',
+            ],
+            [
+                'email' => 'supervisor@posputri.test',
+                'name' => 'Supervisor Toko',
+                'role' => 'Supervisor',
+            ],
+            [
+                'email' => 'kasir@posputri.test',
+                'name' => 'Kasir 01',
+                'role' => 'Cashier',
+            ],
+            [
+                'email' => 'gudang@posputri.test',
+                'name' => 'Staff Gudang',
+                'role' => 'Inventory',
+            ],
+        ];
+
+        foreach ($accounts as $acc) {
+            $user = User::updateOrCreate(
+                ['email' => $acc['email']],
+                [
+                    'name' => $acc['name'],
+                    'password' => Hash::make('password'),
+                    'outlet_id' => $outlet?->id,
+                    'is_active' => true,
+                ]
+            );
+            $user->syncRoles([$acc['role']]);
+        }
     }
 }

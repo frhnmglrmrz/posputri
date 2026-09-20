@@ -1,56 +1,26 @@
 <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" {{ $attributes->merge(['class' => 'inline-block shrink-0']) }}>
-  <defs>
-    <!-- Dark Sleek Squircle Container Background -->
-    <linearGradient id="ppBgGrad" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#0f172a"/>
-      <stop offset="100%" stop-color="#020617"/>
-    </linearGradient>
+  <!-- Clean Retail Emerald Squircle -->
+  <rect width="48" height="48" rx="12" fill="#047857"/>
+  <rect x="0.75" y="0.75" width="46.5" height="46.5" rx="11.25" stroke="#065f46" stroke-width="1.5"/>
 
-    <!-- Top-Left Radial Ambient Glow -->
-    <radialGradient id="ppGlow" cx="0" cy="0" r="32" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#10b981" stop-opacity="0.35"/>
-      <stop offset="100%" stop-color="#10b981" stop-opacity="0"/>
-    </radialGradient>
+  <!-- Shopping Bag Handle -->
+  <path d="M18 18V14C18 10.6863 20.6863 8 24 8C27.3137 8 30 10.6863 30 14V18" 
+        stroke="#ffffff" 
+        stroke-width="3" 
+        stroke-linecap="round"/>
 
-    <!-- Stem Silver-White Gradient -->
-    <linearGradient id="ppStemGrad" x1="14" y1="10" x2="14" y2="38" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#ffffff"/>
-      <stop offset="60%" stop-color="#f8fafc"/>
-      <stop offset="100%" stop-color="#cbd5e1"/>
-    </linearGradient>
+  <!-- Solid White Shopping Bag Body -->
+  <path d="M12 18H36L33.6 36.2C33.4 37.8 32.0 39 30.4 39H17.6C16.0 39 14.6 37.8 14.4 36.2L12 18Z" 
+        fill="#ffffff"/>
 
-    <!-- Emerald Dynamic Ribbon Loop -->
-    <linearGradient id="ppEmeraldGrad" x1="14" y1="10" x2="38" y2="30" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#34d399"/>
-      <stop offset="45%" stop-color="#10b981"/>
-      <stop offset="100%" stop-color="#059669"/>
-    </linearGradient>
-
-    <!-- Putri Diamond Facet Gradient -->
-    <linearGradient id="ppDiamondGrad" x1="22" y1="15" x2="29" y2="24" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#a7f3d0"/>
-      <stop offset="100%" stop-color="#34d399"/>
-    </linearGradient>
-  </defs>
-
-  <!-- Squircle Base with Metallic Stroke -->
-  <rect width="48" height="48" rx="12" fill="url(#ppBgGrad)"/>
-  <rect width="48" height="48" rx="12" fill="url(#ppGlow)"/>
-  <rect x="0.75" y="0.75" width="46.5" height="46.5" rx="11.25" stroke="#334155" stroke-width="1.5" stroke-opacity="0.7"/>
-
-  <!-- Left Pillar (The Solid Data Ledger / Foundation) -->
-  <rect x="11" y="10" width="6.5" height="28" rx="3.25" fill="url(#ppStemGrad)"/>
-
-  <!-- Lower Ledger Accent Notch (Subtle Terminal Card Slot Detail) -->
-  <rect x="11" y="32" width="6.5" height="1.5" fill="#047857" opacity="0.4"/>
-
-  <!-- The "P" Loop (Retail Transaction Arch & Card Reader) -->
-  <path d="M15 10H25.5C30.7467 10 35 14.2533 35 19.5C35 24.7467 30.7467 29 25.5 29H15" 
-        stroke="url(#ppEmeraldGrad)" 
-        stroke-width="6.5" 
+  <!-- Modern Geometric "B" (Berkah Mart Emblem) on the Bag -->
+  <path d="M21 23.5V33.5M21 23.5H25C26.4 23.5 27.5 24.5 27.5 25.8C27.5 27.1 26.4 28.2 25 28.2H21M21 28.2H25.5C27 28.2 28.2 29.4 28.2 30.8C28.2 32.2 27 33.5 25.5 33.5H21" 
+        stroke="#047857" 
+        stroke-width="2.4" 
         stroke-linecap="round" 
         stroke-linejoin="round"/>
 
-  <!-- The Putri Crown Facet / Sync Star (Negative Space Monogram Core) -->
-  <path d="M25.5 15.5L28.75 19.5L25.5 23.5L22.25 19.5Z" fill="url(#ppDiamondGrad)"/>
+  <!-- Golden Berkah Sparkle Accent (Top Right) -->
+  <path d="M34 11L34.8 13.2L37 14L34.8 14.8L34 17L33.2 14.8L31 14L33.2 13.2L34 11Z" 
+        fill="#f59e0b"/>
 </svg>
