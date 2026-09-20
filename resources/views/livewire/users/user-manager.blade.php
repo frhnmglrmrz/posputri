@@ -1,4 +1,6 @@
 <div class="space-y-6">
+    <x-alert />
+
     <!-- Header -->
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white border border-slate-200 p-6 rounded-2xl shadow-xs">
         <div>

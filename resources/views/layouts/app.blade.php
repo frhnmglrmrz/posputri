@@ -324,16 +324,8 @@
 
     <!-- Main Content Slot -->
     <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        @if(session('success'))
-            <div class="mb-4 p-3.5 rounded-xl bg-emerald-50 border border-emerald-300 text-emerald-800 text-xs font-medium flex items-center justify-between">
-                <span>{{ session('success') }}</span>
-            </div>
-        @endif
-
-        @if(session('error'))
-            <div class="mb-4 p-3.5 rounded-xl bg-rose-50 border border-rose-300 text-rose-800 text-xs font-medium flex items-center justify-between">
-                <span>{{ session('error') }}</span>
-            </div>
+        @if(!isset($slot) || empty(trim($slot)))
+            <x-alert />
         @endif
 
         {!! $slot ?? '' !!}

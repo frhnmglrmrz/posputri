@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Enums\StockMovementType;
 use App\Enums\TransactionStatus;
+use App\Livewire\Categories\CategoryManager;
 use App\Livewire\Products\ProductManager;
 use App\Models\Category;
 use App\Models\Outlet;
@@ -590,5 +591,49 @@ class OfflinePosSystemTest extends TestCase
 
         $this->assertNotEmpty($trx->transaction_number);
         $this->assertMatchesRegularExpression('/^TRX-\d{8}-[A-Z0-9]{4}$/', $trx->transaction_number);
+    }
+
+    /**
+     * Test CRUD operations display informative alert messages to user.
+     */
+    public function test_crud_operations_display_informative_alerts(): void
+    {
+        $admin = User::where('email', 'admin@posputri.test')->first();
+        $category = Category::first();
+
+        // 1. Create product alerts
+        Livewire::actingAs($admin)
+            ->test(ProductManager::class)
+            ->call('openCreateModal')
+            ->set('category_id', $category->id)
+            ->set('name', 'Kopi Susu Gula Aren')
+            ->set('purchase_price', 10000)
+            ->set('selling_price', 18000)
+            ->call('save')
+            ->assertSee("Produk 'Kopi Susu Gula Aren' berhasil ditambahkan.");
+
+        $product = Product::where('name', 'Kopi Susu Gula Aren')->first();
+
+        // 2. Update product alerts
+        Livewire::actingAs($admin)
+            ->test(ProductManager::class)
+            ->call('edit', $product->id)
+            ->set('name', 'Kopi Susu Pandan')
+            ->call('save')
+            ->assertSee("Produk 'Kopi Susu Pandan' berhasil diperbarui.");
+
+        // 3. Delete product alerts
+        Livewire::actingAs($admin)
+            ->test(ProductManager::class)
+            ->call('delete', $product->id)
+            ->assertSee("Produk 'Kopi Susu Pandan' berhasil dihapus.");
+
+        // 4. Category CRUD alerts
+        Livewire::actingAs($admin)
+            ->test(CategoryManager::class)
+            ->call('openCreateModal')
+            ->set('name', 'Minuman Dingin')
+            ->call('save')
+            ->assertSee("Kategori 'Minuman Dingin' berhasil ditambahkan.");
     }
 }
