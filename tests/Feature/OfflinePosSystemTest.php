@@ -549,15 +549,22 @@ class OfflinePosSystemTest extends TestCase
         $this->assertNotEmpty($createdProduct->sku);
         $this->assertMatchesRegularExpression('/^PRD-\d{5}$/', $createdProduct->sku);
 
-        // 3. Livewire ProductManager modal initializes with auto SKU and can regenerate
+        // 3. Livewire ProductManager creates product and backend manages SKU automatically without frontend input
         $inventory = User::where('email', 'gudang@berkahmart.test')->first();
         Livewire::actingAs($inventory)
             ->test(ProductManager::class)
             ->call('openCreateModal')
             ->assertSet('isModalOpen', true)
-            ->assertSet('sku', Product::generateNextSku())
-            ->call('regenerateSku')
-            ->assertSet('isModalOpen', true);
+            ->set('category_id', $category->id)
+            ->set('name', 'Backend SKU Managed Product')
+            ->set('purchase_price', 3000)
+            ->set('selling_price', 5000)
+            ->call('save')
+            ->assertHasNoErrors();
+
+        $savedProduct = Product::where('name', 'Backend SKU Managed Product')->first();
+        $this->assertNotNull($savedProduct);
+        $this->assertMatchesRegularExpression('/^PRD-\d{5}$/', $savedProduct->sku);
 
         // 4. Transaction number auto-generation format TRX-YYYYMMDD-XXXX
         $nextTrxNumber = Transaction::generateNextNumber();

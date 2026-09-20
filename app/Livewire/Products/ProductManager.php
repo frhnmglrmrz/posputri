@@ -43,7 +43,6 @@ class ProductManager extends Component
     {
         return [
             'category_id' => ['required', 'exists:categories,id'],
-            'sku' => ['nullable', 'string', 'max:100', 'unique:products,sku,'.$this->productId],
             'name' => ['required', 'string', 'max:255'],
             'purchase_price' => ['required', 'numeric', 'min:0'],
             'selling_price' => ['required', 'numeric', 'min:0'],
@@ -55,15 +54,9 @@ class ProductManager extends Component
     public function openCreateModal(): void
     {
         $this->reset(['productId', 'category_id', 'sku', 'name', 'purchase_price', 'selling_price', 'tax_rate', 'initial_stock', 'is_active']);
-        $this->sku = Product::generateNextSku();
         $this->is_active = true;
         $this->resetErrorBag();
         $this->isModalOpen = true;
-    }
-
-    public function regenerateSku(): void
-    {
-        $this->sku = Product::generateNextSku();
     }
 
     public function edit(int $id): void
@@ -89,10 +82,6 @@ class ProductManager extends Component
     {
         $validated = $this->validate();
 
-        if (empty($validated['sku'])) {
-            $validated['sku'] = Product::generateNextSku();
-        }
-
         if ($this->productId) {
             $product = Product::findOrFail($this->productId);
             $product->update($validated);
@@ -100,6 +89,7 @@ class ProductManager extends Component
         } else {
             $product = Product::create([
                 'uuid' => (string) Str::uuid(),
+                'sku' => Product::generateNextSku(),
                 ...$validated,
             ]);
 
