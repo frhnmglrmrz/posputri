@@ -19,6 +19,7 @@
                     id="pos-barcode-input"
                     x-model="searchQuery"
                     @input="filterProducts()"
+                    @keydown.enter.prevent="if (searchQuery.trim()) { handleBarcodeScanned(searchQuery.trim()); searchQuery = ''; filterProducts(); }"
                     placeholder="Cari produk berdasarkan nama, SKU, atau scan barcode scanner USB..."
                     class="w-full pl-10 pr-4 py-2 bg-white border border-slate-300 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm font-medium transition shadow-2xs">
                 <div class="absolute left-3 top-2.5 text-slate-400">

@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Enums\StockMovementType;
 use App\Enums\TransactionStatus;
+use App\Livewire\Products\ProductManager;
 use App\Models\Outlet;
 use App\Models\Product;
 use App\Models\Stock;
@@ -19,6 +20,7 @@ use Database\Seeders\ProductSeeder;
 use Database\Seeders\RoleSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Str;
+use Livewire\Livewire;
 use Tests\TestCase;
 
 class OfflinePosSystemTest extends TestCase
@@ -503,5 +505,27 @@ class OfflinePosSystemTest extends TestCase
             ->assertSee('Status Shift Anda')
             ->assertSee('Penjualan Saya Hari Ini')
             ->assertSee('BUKA KASIR SEKARANG');
+    }
+
+    /**
+     * Test products have valid EAN-13 barcodes and can be searched by barcode.
+     */
+    public function test_products_have_barcodes_and_can_be_queried_by_barcode(): void
+    {
+        $product = Product::whereNotNull('barcode')->first();
+        $this->assertNotNull($product);
+        $this->assertMatchesRegularExpression('/^[0-9]+$/', $product->barcode);
+
+        // 1. Direct model query by barcode
+        $found = Product::where('barcode', $product->barcode)->first();
+        $this->assertEquals($product->id, $found->id);
+
+        // 2. Search by barcode via Staff Inventory livewire manager
+        $inventory = User::where('email', 'gudang@posputri.test')->first();
+        Livewire::actingAs($inventory)
+            ->test(ProductManager::class)
+            ->set('search', $product->barcode)
+            ->assertSee($product->name)
+            ->assertSee($product->sku);
     }
 }
