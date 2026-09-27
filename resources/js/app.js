@@ -6,11 +6,11 @@ import { createPosComponent } from './pos/cart';
 // Expose DB & Pos Component to window for Alpine.js
 window.posDb = db;
 window.createPosComponent = createPosComponent;
+window.posConnectivity = new ConnectivityManager();
+window.posSyncEngine = new SyncEngine();
 
-// Initialize Connectivity & Sync Engine
+// Register Service Worker for PWA (PRD Section 9, 10)
 document.addEventListener('DOMContentLoaded', () => {
-    window.posConnectivity = new ConnectivityManager();
-    window.posSyncEngine = new SyncEngine();
 
     // Register Service Worker for PWA (PRD Section 9, 10)
     if ('serviceWorker' in navigator && (window.location.protocol === 'https:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {

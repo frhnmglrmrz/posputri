@@ -81,21 +81,35 @@ export function createPosComponent(config = {}) {
         async loadLocalData() {
             this.isLoading = true;
             try {
-                this.categories = await db.categories.where('is_active').equals(1).toArray();
-                this.products = await db.products.where('is_active').equals(1).toArray();
-                this.paymentMethods = await db.payment_methods.where('is_active').equals(1).toArray();
+                const cats = await db.categories.toArray();
+                this.categories = cats.filter(c => c.is_active === true || c.is_active == 1);
+
+                let prods = await db.products.toArray();
+                this.products = prods.filter(p => p.is_active === true || p.is_active == 1);
+
+                const methods = await db.payment_methods.toArray();
+                this.paymentMethods = methods.filter(m => m.is_active === true || m.is_active == 1 || m.offline_available == 1);
 
                 // If local database is empty and online, hydrate from bootstrap API
                 if (this.products.length === 0 && this.isOnline) {
                     if (window.posSyncEngine) {
-                        await window.posSyncEngine.bootstrapMasterData();
-                        this.categories = await db.categories.where('is_active').equals(1).toArray();
-                        this.products = await db.products.where('is_active').equals(1).toArray();
-                        this.paymentMethods = await db.payment_methods.where('is_active').equals(1).toArray();
+                        const success = await window.posSyncEngine.bootstrapMasterData();
+                        if (success) {
+                            const newCats = await db.categories.toArray();
+                            this.categories = newCats.filter(c => c.is_active === true || c.is_active == 1);
+
+                            const newProds = await db.products.toArray();
+                            this.products = newProds.filter(p => p.is_active === true || p.is_active == 1);
+
+                            const newMethods = await db.payment_methods.toArray();
+                            this.paymentMethods = newMethods.filter(m => m.is_active === true || m.is_active == 1 || m.offline_available == 1);
+                        }
                     }
                 }
 
                 this.filterProducts();
+            } catch (err) {
+                console.error('Failed to load local data from IndexedDB:', err);
             } finally {
                 this.isLoading = false;
             }
@@ -131,7 +145,14 @@ export function createPosComponent(config = {}) {
 
         handleQuickAddBySku(code) {
             const cleanCode = code.trim().toLowerCase();
-            const found = this.products.find(p => (p.sku && p.sku.toLowerCase() === cleanCode) || (p.name && p.name.toLowerCase() === cleanCode));
+            // 1. Check exact match by SKU or Name
+            let found = this.products.find(p => (p.sku && p.sku.toLowerCase() === cleanCode) || (p.name && p.name.toLowerCase() === cleanCode));
+
+            // 2. If not found by exact match, but filtered search has exactly 1 result, pick that product
+            if (!found && this.filteredProducts.length === 1) {
+                found = this.filteredProducts[0];
+            }
+
             if (found) {
                 this.addToCart(found);
                 this.showToast(`Produk ditambahkan: ${found.name}`);

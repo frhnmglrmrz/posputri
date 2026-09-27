@@ -6,7 +6,7 @@ db.version(1).stores({
     products: '++id, uuid, barcode, sku, name, category_id, is_active',
     categories: '++id, uuid, slug, name, is_active',
     customers: '++id, uuid, phone, name',
-    payment_methods: '++id, uuid, code, name, offline_available',
+    payment_methods: '++id, uuid, code, name, offline_available, is_active',
     transactions: '++id, uuid, transaction_number, status, transaction_at, synced_at',
     transaction_items: '++id, uuid, transaction_uuid, product_id',
     payments: '++id, uuid, transaction_uuid, payment_method',
