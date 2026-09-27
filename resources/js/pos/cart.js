@@ -8,6 +8,8 @@ import { initBarcodeScanner } from './scanner';
 export function createPosComponent(config = {}) {
     return {
         outletId: config.outletId || 1,
+        outletName: config.outletName || 'Outlet Utama',
+        outletAddress: config.outletAddress || 'Jl. Boulevard Raya No. 1, Jakarta',
         cashierId: config.cashierId || 1,
         cashierName: config.cashierName || 'Kasir',
         shiftId: config.shiftId || null,
@@ -128,13 +130,14 @@ export function createPosComponent(config = {}) {
             const catId = this.selectedCategory;
 
             this.filteredProducts = this.products.filter((p) => {
-                const matchCategory = (catId === 'all' || p.category_id === parseInt(catId));
+                const matchCategory = (catId === 'all' || p.category_id == catId);
                 if (!matchCategory) return false;
 
                 if (!query) return true;
 
                 return (p.name && p.name.toLowerCase().includes(query))
-                    || (p.sku && p.sku.toLowerCase().includes(query));
+                    || (p.sku && p.sku.toLowerCase().includes(query))
+                    || (p.barcode && p.barcode.toLowerCase().includes(query));
             });
         },
 
@@ -145,10 +148,14 @@ export function createPosComponent(config = {}) {
 
         handleQuickAddBySku(code) {
             const cleanCode = code.trim().toLowerCase();
-            // 1. Check exact match by SKU or Name
-            let found = this.products.find(p => (p.sku && p.sku.toLowerCase() === cleanCode) || (p.name && p.name.toLowerCase() === cleanCode));
+            // 1. Check exact match by SKU, barcode, or Name
+            let found = this.products.find(p =>
+                (p.sku && p.sku.toLowerCase() === cleanCode) ||
+                (p.barcode && p.barcode.toLowerCase() === cleanCode) ||
+                (p.name && p.name.toLowerCase() === cleanCode)
+            );
 
-            // 2. If not found by exact match, but filtered search has exactly 1 result, pick that product
+            // 2. If no exact match but filtered search has exactly 1 result, pick that product
             if (!found && this.filteredProducts.length === 1) {
                 found = this.filteredProducts[0];
             }
@@ -156,6 +163,10 @@ export function createPosComponent(config = {}) {
             if (found) {
                 this.addToCart(found);
                 this.showToast(`Produk ditambahkan: ${found.name}`);
+                this.searchQuery = '';
+                this.filterProducts();
+            } else if (this.filteredProducts.length > 1) {
+                this.showToast(`Ditemukan ${this.filteredProducts.length} produk yang cocok. Silakan pilih dari daftar.`);
             } else {
                 this.showToast(`Produk / SKU "${code.trim()}" tidak ditemukan!`, 'error');
             }

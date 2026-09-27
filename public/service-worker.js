@@ -1,4 +1,4 @@
-const CACHE_NAME = 'posputri-v3';
+const CACHE_NAME = 'berkahmart-v4';
 const STATIC_ASSETS = [
     '/',
     '/pos',

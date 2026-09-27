@@ -3,9 +3,9 @@
 @section('content')
 <div x-data="createPosComponent({
     outletId: {{ auth()->user()->outlet_id ?? 1 }},
-    outletName: '{{ auth()->user()->outlet->name ?? 'Outlet Utama' }}',
+    outletName: @js(auth()->user()->outlet->name ?? 'Outlet Utama'),
     cashierId: {{ auth()->id() }},
-    cashierName: '{{ auth()->user()->name }}',
+    cashierName: @js(auth()->user()->name),
     shiftId: {{ \App\Models\Shift::where('cashier_id', auth()->id())->where('status', 'open')->value('id') ?? 'null' }}
 })" class="flex flex-col lg:flex-row gap-5 h-[calc(100vh-7rem)] select-none">
 
@@ -19,7 +19,7 @@
                     id="pos-search-input"
                     x-model="searchQuery"
                     @input="filterProducts()"
-                    @keydown.enter.prevent="if (searchQuery.trim()) { handleQuickAddBySku(searchQuery.trim()); searchQuery = ''; filterProducts(); }"
+                    @keydown.enter.prevent="if (searchQuery.trim()) { handleQuickAddBySku(searchQuery.trim()); }"
                     placeholder="Cari produk berdasarkan nama atau SKU (tekan Enter untuk tambah cepat)..."
                     class="w-full pl-10 pr-4 py-2 bg-white border border-slate-300 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm font-medium transition shadow-2xs">
                 <div class="absolute left-3 top-2.5 text-slate-400">
