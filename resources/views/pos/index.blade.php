@@ -29,6 +29,18 @@
                 </div>
             </div>
 
+            <!-- Barcode Camera Trigger Button -->
+            <button type="button"
+                @click="openCameraScanner()"
+                title="Pindai Barcode menggunakan Kamera Perangkat"
+                class="px-3 py-2 bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 text-emerald-800 rounded-xl text-xs font-bold transition flex items-center gap-1.5 active:scale-95 shadow-2xs shrink-0">
+                <svg class="w-4 h-4 text-emerald-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                <span>Scan Kamera</span>
+            </button>
+
             <!-- Sync & Local Status Chips -->
             <div class="flex items-center gap-2 shrink-0">
                 <button type="button"
@@ -334,6 +346,63 @@
                 </button>
                 <button type="button" @click="closeReceipt()" class="py-2.5 px-3 rounded-xl bg-slate-100 text-slate-700 font-bold text-xs hover:bg-slate-200 transition active:scale-95 border border-slate-200">
                     Tutup
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CAMERA BARCODE SCANNER MODAL -->
+    <div x-show="isCameraModalOpen"
+        x-cloak
+        class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/70 backdrop-blur-xs p-4">
+        <div @click.away="closeCameraScanner()"
+            class="w-full max-w-md bg-white border border-slate-200 rounded-3xl shadow-2xl p-5 space-y-4">
+            
+            <div class="flex items-center justify-between pb-3 border-b border-slate-200">
+                <div class="flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <h3 class="text-sm font-bold text-slate-900">Pemindaian Barcode Kamera</h3>
+                </div>
+                <button type="button" @click="closeCameraScanner()" class="text-slate-400 hover:text-slate-700 p-1">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+
+            <!-- Live Camera Viewfinder Box -->
+            <div class="relative w-full h-64 bg-slate-900 rounded-2xl overflow-hidden flex items-center justify-center border border-slate-800 shadow-inner">
+                <video id="camera-scanner-video" class="w-full h-full object-cover" playsinline autoplay muted></video>
+
+                <!-- Scanning Target Box & Animated Laser -->
+                <div class="absolute inset-x-8 inset-y-10 border-2 border-dashed border-emerald-400/80 rounded-xl pointer-events-none flex flex-col justify-center items-center">
+                    <!-- Laser Line -->
+                    <div class="w-full h-0.5 bg-emerald-400 shadow-[0_0_8px_#34d399] animate-pulse"></div>
+                    <span class="absolute bottom-2 px-2 py-0.5 rounded bg-slate-900/80 text-[10px] text-emerald-300 font-mono">Posisikan Barcode di Kotak</span>
+                </div>
+            </div>
+
+            <!-- Status Pill -->
+            <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200 text-center">
+                <p class="text-xs text-slate-600 font-medium" x-text="cameraStatusText"></p>
+            </div>
+
+            <!-- Manual Input Fallback -->
+            <div class="pt-2 border-t border-slate-100 space-y-2">
+                <label class="block text-[11px] font-semibold text-slate-600 uppercase tracking-wider">Atau Input Kode Barcode / SKU Manual:</label>
+                <div class="flex gap-2">
+                    <input type="text"
+                        x-model="manualBarcodeInput"
+                        @keydown.enter.prevent="handleManualBarcodeSubmit()"
+                        placeholder="Contoh: 8990000000001 atau PRD-00001..."
+                        class="flex-1 px-3.5 py-2 rounded-xl border border-slate-300 text-xs font-mono focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                    <button type="button" @click="handleManualBarcodeSubmit()" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs transition active:scale-95 shadow-2xs">
+                        Tambah
+                    </button>
+                </div>
+            </div>
+
+            <div class="pt-1">
+                <button type="button" @click="closeCameraScanner()" class="w-full py-2.5 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition">
+                    Selesai / Tutup Kamera
                 </button>
             </div>
         </div>

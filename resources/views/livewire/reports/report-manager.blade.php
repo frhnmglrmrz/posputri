@@ -7,15 +7,26 @@
             <p class="text-xs text-slate-500 mt-1">Laporan penjualan, produk terlaris, dan metode pembayaran (PRD Section 55, 56)</p>
         </div>
 
-        <!-- Date Range Filter -->
-        <div class="flex items-center gap-2 self-start sm:self-auto text-xs">
-            <div>
-                <input type="date" wire:model.live="startDate" class="px-3.5 py-1.5 rounded-xl bg-white border border-slate-300 text-slate-900 text-xs focus:outline-none focus:ring-2 focus:ring-emerald-500 shadow-2xs">
+        <!-- Date Range Filter & Export Actions -->
+        <div class="flex flex-wrap items-center gap-2 self-start sm:self-auto text-xs">
+            <div class="flex items-center gap-1.5 bg-white border border-slate-300 rounded-xl px-2.5 py-1 shadow-2xs">
+                <input type="date" wire:model.live="startDate" class="bg-transparent text-slate-900 text-xs focus:outline-none">
+                <span class="text-slate-400 font-medium">s/d</span>
+                <input type="date" wire:model.live="endDate" class="bg-transparent text-slate-900 text-xs focus:outline-none">
             </div>
-            <span class="text-slate-400 font-medium">s/d</span>
-            <div>
-                <input type="date" wire:model.live="endDate" class="px-3.5 py-1.5 rounded-xl bg-white border border-slate-300 text-slate-900 text-xs focus:outline-none focus:ring-2 focus:ring-emerald-500 shadow-2xs">
-            </div>
+
+            <!-- Print Button -->
+            <button type="button" onclick="window.print()" class="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold border border-slate-300 transition flex items-center gap-1.5 active:scale-95 shadow-2xs print:hidden">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+                <span>Cetak</span>
+            </button>
+
+            <!-- Export CSV Button -->
+            <button type="button" wire:click="exportCsv" wire:loading.attr="disabled" class="px-3 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold transition flex items-center gap-1.5 active:scale-95 shadow-2xs print:hidden">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                <span wire:loading.remove wire:target="exportCsv">Ekspor CSV</span>
+                <span wire:loading wire:target="exportCsv">Mengunduh...</span>
+            </button>
         </div>
     </div>
 

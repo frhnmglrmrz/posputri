@@ -32,6 +32,12 @@ class PermissionSeeder extends Seeder
             'view-shifts',
             'view-basic-reports',
 
+            // Owner permissions (Read-only analytics & reports)
+            'view-owner-dashboard',
+            'view-sales-reports',
+            'export-reports',
+            'view-analytics',
+
             // Admin permissions
             'manage-users',
             'manage-products',

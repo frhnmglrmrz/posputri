@@ -34,149 +34,164 @@
 
                     <!-- Desktop Navigation with Clean Sub-Nav Dropdowns -->
                     <nav class="hidden md:flex items-center gap-1.5 text-xs font-semibold">
-                        <!-- 1. Dashboard -->
-                        <a href="{{ route('dashboard') }}" class="px-3 py-1.5 rounded-lg transition {{ request()->routeIs('dashboard') ? 'bg-slate-100 text-slate-900 border border-slate-300' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900' }}">
-                            Dashboard
-                        </a>
-
-                        <!-- 2. Terminal POS (Cashier, Supervisor, Admin) -->
-                        @hasanyrole('Admin|Supervisor|Cashier')
-                        <a href="{{ route('pos.index') }}" class="px-3 py-1.5 rounded-lg text-emerald-800 bg-emerald-50 border border-emerald-300 hover:bg-emerald-100 font-bold flex items-center gap-1.5 transition active:scale-98">
-                            <span class="w-2 h-2 rounded-full bg-emerald-600 animate-pulse"></span>
-                            Terminal POS
-                        </a>
-                        @endhasanyrole
-
-                        <!-- 3. Sub-Nav: Katalog & Stok (Inventory, Supervisor, Admin) -->
-                        @hasanyrole('Admin|Supervisor|Inventory')
-                        <div class="relative" x-data="{ open: false }" @click.outside="open = false" @close.stop="open = false">
-                            <button type="button" @click="open = !open"
-                                class="px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 {{ (request()->routeIs('products.*') || request()->routeIs('categories.*') || request()->routeIs('inventory.*')) ? 'bg-slate-100 text-slate-900 border border-slate-300 font-bold' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900' }}">
-                                <span>Katalog & Stok</span>
-                                <svg class="w-3.5 h-3.5 text-slate-400 transition-transform duration-150" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                                </svg>
-                            </button>
-                            <div x-show="open"
-                                x-cloak
-                                x-transition:enter="transition ease-out duration-100"
-                                x-transition:enter-start="transform opacity-0 scale-95"
-                                x-transition:enter-end="transform opacity-100 scale-100"
-                                x-transition:leave="transition ease-in duration-75"
-                                x-transition:leave-start="transform opacity-100 scale-100"
-                                x-transition:leave-end="transform opacity-0 scale-95"
-                                class="absolute left-0 mt-2 w-52 rounded-xl bg-white border border-slate-200 shadow-xl p-1.5 z-50 text-left">
-                                <a href="{{ route('products.index') }}" @click="open = false" class="flex flex-col px-3 py-2 rounded-lg transition {{ request()->routeIs('products.*') ? 'bg-emerald-50 text-emerald-900 font-bold' : 'text-slate-700 hover:bg-slate-50' }}">
-                                    <span class="text-xs font-bold">Daftar Produk</span>
-                                    <span class="text-[10px] text-slate-400 font-normal">Katalog & harga jual</span>
-                                </a>
-                                <a href="{{ route('categories.index') }}" @click="open = false" class="flex flex-col px-3 py-2 rounded-lg transition {{ request()->routeIs('categories.*') ? 'bg-emerald-50 text-emerald-900 font-bold' : 'text-slate-700 hover:bg-slate-50' }}">
-                                    <span class="text-xs font-bold">Kategori Produk</span>
-                                    <span class="text-[10px] text-slate-400 font-normal">Pengelompokan menu</span>
-                                </a>
-                                <a href="{{ route('inventory.index') }}" @click="open = false" class="flex flex-col px-3 py-2 rounded-lg transition {{ request()->routeIs('inventory.*') ? 'bg-emerald-50 text-emerald-900 font-bold' : 'text-slate-700 hover:bg-slate-50' }}">
-                                    <span class="text-xs font-bold">Inventaris & Stok</span>
-                                    <span class="text-[10px] text-slate-400 font-normal">Audit stok & restock</span>
-                                </a>
+                        <!-- 1. Owner Navigation (Strictly Read-Only Executive View) -->
+                        @role('Owner')
+                            <a href="{{ route('dashboard') }}" class="px-3 py-1.5 rounded-lg transition {{ request()->routeIs('dashboard') ? 'bg-slate-100 text-slate-900 border border-slate-300 font-bold' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900' }}">
+                                Dashboard Bisnis
+                            </a>
+                            <a href="{{ route('reports.index') }}" class="px-3 py-1.5 rounded-lg transition {{ request()->routeIs('reports.*') ? 'bg-slate-100 text-slate-900 border border-slate-300 font-bold' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900' }}">
+                                Laporan Penjualan
+                            </a>
+                            <a href="{{ route('transactions.index') }}" class="px-3 py-1.5 rounded-lg transition {{ request()->routeIs('transactions.*') ? 'bg-slate-100 text-slate-900 border border-slate-300 font-bold' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900' }}">
+                                Riwayat Transaksi
+                            </a>
+                            <a href="{{ route('customers.index') }}" class="px-3 py-1.5 rounded-lg transition {{ request()->routeIs('customers.*') ? 'bg-slate-100 text-slate-900 border border-slate-300 font-bold' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900' }}">
+                                Data Pelanggan
+                            </a>
+                        @elserole('Cashier')
+                        <!-- 2. Cashier Navigation (Operational POS Focus) -->
+                            <a href="{{ route('dashboard') }}" class="px-3 py-1.5 rounded-lg transition {{ request()->routeIs('dashboard') ? 'bg-slate-100 text-slate-900 border border-slate-300 font-bold' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900' }}">
+                                Ringkasan
+                            </a>
+                            <a href="{{ route('pos.index') }}" class="px-3.5 py-1.5 rounded-lg text-emerald-800 bg-emerald-50 border border-emerald-300 hover:bg-emerald-100 font-bold flex items-center gap-1.5 transition active:scale-98">
+                                <span class="w-2 h-2 rounded-full bg-emerald-600 animate-pulse"></span>
+                                Terminal POS
+                            </a>
+                            <a href="{{ route('shifts.index') }}" class="px-3 py-1.5 rounded-lg transition {{ request()->routeIs('shifts.*') ? 'bg-slate-100 text-slate-900 border border-slate-300 font-bold' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900' }}">
+                                Shift Kasir
+                            </a>
+                            <a href="{{ route('transactions.index') }}" class="px-3 py-1.5 rounded-lg transition {{ request()->routeIs('transactions.*') ? 'bg-slate-100 text-slate-900 border border-slate-300 font-bold' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900' }}">
+                                Riwayat Transaksi
+                            </a>
+                            <a href="{{ route('customers.index') }}" class="px-3 py-1.5 rounded-lg transition {{ request()->routeIs('customers.*') ? 'bg-slate-100 text-slate-900 border border-slate-300 font-bold' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900' }}">
+                                Pelanggan
+                            </a>
+                        @elserole('Inventory')
+                        <!-- 3. Inventory / Warehouse Navigation (Stock & Catalog Focus) -->
+                            <a href="{{ route('dashboard') }}" class="px-3 py-1.5 rounded-lg transition {{ request()->routeIs('dashboard') ? 'bg-slate-100 text-slate-900 border border-slate-300 font-bold' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900' }}">
+                                Dashboard Stok
+                            </a>
+                            <a href="{{ route('products.index') }}" class="px-3 py-1.5 rounded-lg transition {{ request()->routeIs('products.*') ? 'bg-slate-100 text-slate-900 border border-slate-300 font-bold' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900' }}">
+                                Daftar Produk
+                            </a>
+                            <a href="{{ route('categories.index') }}" class="px-3 py-1.5 rounded-lg transition {{ request()->routeIs('categories.*') ? 'bg-slate-100 text-slate-900 border border-slate-300 font-bold' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900' }}">
+                                Kategori
+                            </a>
+                            <a href="{{ route('inventory.index') }}" class="px-3 py-1.5 rounded-lg transition {{ request()->routeIs('inventory.*') ? 'bg-slate-100 text-slate-900 border border-slate-300 font-bold' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900' }}">
+                                Mutasi & Stok
+                            </a>
+                        @elserole('Supervisor')
+                        <!-- 4. Supervisor Navigation (Operational Store Supervision) -->
+                            <a href="{{ route('dashboard') }}" class="px-3 py-1.5 rounded-lg transition {{ request()->routeIs('dashboard') ? 'bg-slate-100 text-slate-900 border border-slate-300 font-bold' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900' }}">
+                                Dashboard
+                            </a>
+                            <a href="{{ route('pos.index') }}" class="px-3 py-1.5 rounded-lg text-emerald-800 bg-emerald-50 border border-emerald-300 hover:bg-emerald-100 font-bold flex items-center gap-1.5 transition active:scale-98">
+                                <span class="w-2 h-2 rounded-full bg-emerald-600 animate-pulse"></span>
+                                Terminal POS
+                            </a>
+                            <div class="relative" x-data="{ open: false }" @click.outside="open = false" @close.stop="open = false">
+                                <button type="button" @click="open = !open"
+                                    class="px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 {{ (request()->routeIs('transactions.*') || request()->routeIs('shifts.*') || request()->routeIs('customers.*')) ? 'bg-slate-100 text-slate-900 border border-slate-300 font-bold' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900' }}">
+                                    <span>Operasional</span>
+                                    <svg class="w-3.5 h-3.5 text-slate-400 transition-transform duration-150" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                                </button>
+                                <div x-show="open" x-cloak class="absolute left-0 mt-2 w-48 rounded-xl bg-white border border-slate-200 shadow-xl p-1.5 z-50">
+                                    <a href="{{ route('transactions.index') }}" @click="open = false" class="block px-3 py-2 rounded-lg text-slate-700 hover:bg-slate-50 font-medium">Riwayat Transaksi</a>
+                                    <a href="{{ route('shifts.index') }}" @click="open = false" class="block px-3 py-2 rounded-lg text-slate-700 hover:bg-slate-50 font-medium">Pengawasan Shift</a>
+                                    <a href="{{ route('customers.index') }}" @click="open = false" class="block px-3 py-2 rounded-lg text-slate-700 hover:bg-slate-50 font-medium">Data Pelanggan</a>
+                                </div>
                             </div>
-                        </div>
-                        @endhasanyrole
-
-                        <!-- 4. Sub-Nav: Operasional (Cashier, Supervisor, Admin) -->
-                        @hasanyrole('Admin|Supervisor|Cashier')
-                        <div class="relative" x-data="{ open: false }" @click.outside="open = false" @close.stop="open = false">
-                            <button type="button" @click="open = !open"
-                                class="px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 {{ (request()->routeIs('transactions.*') || request()->routeIs('shifts.*') || request()->routeIs('customers.*')) ? 'bg-slate-100 text-slate-900 border border-slate-300 font-bold' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900' }}">
-                                <span>Operasional</span>
-                                <svg class="w-3.5 h-3.5 text-slate-400 transition-transform duration-150" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                                </svg>
-                            </button>
-                            <div x-show="open"
-                                x-cloak
-                                x-transition:enter="transition ease-out duration-100"
-                                x-transition:enter-start="transform opacity-0 scale-95"
-                                x-transition:enter-end="transform opacity-100 scale-100"
-                                x-transition:leave="transition ease-in duration-75"
-                                x-transition:leave-start="transform opacity-100 scale-100"
-                                x-transition:leave-end="transform opacity-0 scale-95"
-                                class="absolute left-0 mt-2 w-52 rounded-xl bg-white border border-slate-200 shadow-xl p-1.5 z-50 text-left">
-                                <a href="{{ route('transactions.index') }}" @click="open = false" class="flex flex-col px-3 py-2 rounded-lg transition {{ request()->routeIs('transactions.*') ? 'bg-emerald-50 text-emerald-900 font-bold' : 'text-slate-700 hover:bg-slate-50' }}">
-                                    <span class="text-xs font-bold">Riwayat Transaksi</span>
-                                    <span class="text-[10px] text-slate-400 font-normal">Daftar penjualan & struk</span>
-                                </a>
-                                <a href="{{ route('shifts.index') }}" @click="open = false" class="flex flex-col px-3 py-2 rounded-lg transition {{ request()->routeIs('shifts.*') ? 'bg-emerald-50 text-emerald-900 font-bold' : 'text-slate-700 hover:bg-slate-50' }}">
-                                    <span class="text-xs font-bold">Shift Kasir</span>
-                                    <span class="text-[10px] text-slate-400 font-normal">Buka / tutup shift & kas</span>
-                                </a>
-                                <a href="{{ route('customers.index') }}" @click="open = false" class="flex flex-col px-3 py-2 rounded-lg transition {{ request()->routeIs('customers.*') ? 'bg-emerald-50 text-emerald-900 font-bold' : 'text-slate-700 hover:bg-slate-50' }}">
-                                    <span class="text-xs font-bold">Data Pelanggan</span>
-                                    <span class="text-[10px] text-slate-400 font-normal">Database kontak pelanggan</span>
-                                </a>
+                            <div class="relative" x-data="{ open: false }" @click.outside="open = false" @close.stop="open = false">
+                                <button type="button" @click="open = !open"
+                                    class="px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 {{ (request()->routeIs('products.*') || request()->routeIs('categories.*') || request()->routeIs('inventory.*')) ? 'bg-slate-100 text-slate-900 border border-slate-300 font-bold' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900' }}">
+                                    <span>Katalog & Stok</span>
+                                    <svg class="w-3.5 h-3.5 text-slate-400 transition-transform duration-150" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                                </button>
+                                <div x-show="open" x-cloak class="absolute left-0 mt-2 w-48 rounded-xl bg-white border border-slate-200 shadow-xl p-1.5 z-50">
+                                    <a href="{{ route('products.index') }}" @click="open = false" class="block px-3 py-2 rounded-lg text-slate-700 hover:bg-slate-50 font-medium">Daftar Produk</a>
+                                    <a href="{{ route('categories.index') }}" @click="open = false" class="block px-3 py-2 rounded-lg text-slate-700 hover:bg-slate-50 font-medium">Kategori Produk</a>
+                                    <a href="{{ route('inventory.index') }}" @click="open = false" class="block px-3 py-2 rounded-lg text-slate-700 hover:bg-slate-50 font-medium">Inventaris & Stok</a>
+                                </div>
                             </div>
-                        </div>
-                        @endhasanyrole
-
-                        <!-- 5. Sub-Nav: Laporan & Data (Supervisor & Admin) -->
-                        @hasanyrole('Admin|Supervisor')
-                        <div class="relative" x-data="{ open: false }" @click.outside="open = false" @close.stop="open = false">
-                            <button type="button" @click="open = !open"
-                                class="px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 {{ (request()->routeIs('reports.*') || request()->routeIs('sync.*')) ? 'bg-slate-100 text-slate-900 border border-slate-300 font-bold' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900' }}">
-                                <span>Laporan & Sync</span>
-                                <svg class="w-3.5 h-3.5 text-slate-400 transition-transform duration-150" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                                </svg>
-                            </button>
-                            <div x-show="open"
-                                x-cloak
-                                x-transition:enter="transition ease-out duration-100"
-                                x-transition:enter-start="transform opacity-0 scale-95"
-                                x-transition:enter-end="transform opacity-100 scale-100"
-                                x-transition:leave="transition ease-in duration-75"
-                                x-transition:leave-start="transform opacity-100 scale-100"
-                                x-transition:leave-end="transform opacity-0 scale-95"
-                                class="absolute left-0 mt-2 w-52 rounded-xl bg-white border border-slate-200 shadow-xl p-1.5 z-50 text-left">
-                                <a href="{{ route('reports.index') }}" @click="open = false" class="flex flex-col px-3 py-2 rounded-lg transition {{ request()->routeIs('reports.*') ? 'bg-emerald-50 text-emerald-900 font-bold' : 'text-slate-700 hover:bg-slate-50' }}">
-                                    <span class="text-xs font-bold">Laporan Penjualan</span>
-                                    <span class="text-[10px] text-slate-400 font-normal">Analitik omzet & laba</span>
-                                </a>
-                                <a href="{{ route('sync.index') }}" @click="open = false" class="flex flex-col px-3 py-2 rounded-lg transition {{ request()->routeIs('sync.*') ? 'bg-emerald-50 text-emerald-900 font-bold' : 'text-slate-700 hover:bg-slate-50' }}">
-                                    <span class="text-xs font-bold">Sync Center</span>
-                                    <span class="text-[10px] text-slate-400 font-normal">Status offline & antrean</span>
-                                </a>
+                            <a href="{{ route('reports.index') }}" class="px-3 py-1.5 rounded-lg transition {{ request()->routeIs('reports.*') ? 'bg-slate-100 text-slate-900 border border-slate-300 font-bold' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900' }}">
+                                Laporan
+                            </a>
+                        @else
+                        <!-- 5. Admin Navigation (System Administration Focus) -->
+                            <a href="{{ route('dashboard') }}" class="px-3 py-1.5 rounded-lg transition {{ request()->routeIs('dashboard') ? 'bg-slate-100 text-slate-900 border border-slate-300 font-bold' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900' }}">
+                                Dashboard
+                            </a>
+                            <!-- Subnav Administrasi Sistem -->
+                            <div class="relative" x-data="{ open: false }" @click.outside="open = false" @close.stop="open = false">
+                                <button type="button" @click="open = !open"
+                                    class="px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 {{ (request()->routeIs('users.*') || request()->routeIs('settings.*') || request()->routeIs('sync.*')) ? 'bg-slate-100 text-slate-900 border border-slate-300 font-bold' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900' }}">
+                                    <span>Administrasi Sistem</span>
+                                    <svg class="w-3.5 h-3.5 text-slate-400 transition-transform duration-150" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                                </button>
+                                <div x-show="open" x-cloak class="absolute left-0 mt-2 w-52 rounded-xl bg-white border border-slate-200 shadow-xl p-1.5 z-50 text-left">
+                                    <a href="{{ route('users.index') }}" @click="open = false" class="flex flex-col px-3 py-2 rounded-lg transition {{ request()->routeIs('users.*') ? 'bg-emerald-50 text-emerald-900 font-bold' : 'text-slate-700 hover:bg-slate-50' }}">
+                                        <span class="text-xs font-bold">Manajemen Pengguna</span>
+                                        <span class="text-[10px] text-slate-400 font-normal">Kelola akun staf & hak akses</span>
+                                    </a>
+                                    <a href="{{ route('settings.index') }}" @click="open = false" class="flex flex-col px-3 py-2 rounded-lg transition {{ request()->routeIs('settings.*') ? 'bg-emerald-50 text-emerald-900 font-bold' : 'text-slate-700 hover:bg-slate-50' }}">
+                                        <span class="text-xs font-bold">Outlet & Perangkat</span>
+                                        <span class="text-[10px] text-slate-400 font-normal">Cabang toko & terminal POS</span>
+                                    </a>
+                                    <a href="{{ route('sync.index') }}" @click="open = false" class="flex flex-col px-3 py-2 rounded-lg transition {{ request()->routeIs('sync.*') ? 'bg-emerald-50 text-emerald-900 font-bold' : 'text-slate-700 hover:bg-slate-50' }}">
+                                        <span class="text-xs font-bold">Sync Center</span>
+                                        <span class="text-[10px] text-slate-400 font-normal">Status offline & antrean sinkron</span>
+                                    </a>
+                                </div>
                             </div>
-                        </div>
-                        @endhasanyrole
-
-                        <!-- 6. Sub-Nav: Pengaturan (Admin Only) -->
-                        @role('Admin')
-                        <div class="relative" x-data="{ open: false }" @click.outside="open = false" @close.stop="open = false">
-                            <button type="button" @click="open = !open"
-                                class="px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 {{ (request()->routeIs('users.*') || request()->routeIs('settings.*')) ? 'bg-slate-100 text-slate-900 border border-slate-300 font-bold' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900' }}">
-                                <span>Pengaturan</span>
-                                <svg class="w-3.5 h-3.5 text-slate-400 transition-transform duration-150" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                                </svg>
-                            </button>
-                            <div x-show="open"
-                                x-cloak
-                                x-transition:enter="transition ease-out duration-100"
-                                x-transition:enter-start="transform opacity-0 scale-95"
-                                x-transition:enter-end="transform opacity-100 scale-100"
-                                x-transition:leave="transition ease-in duration-75"
-                                x-transition:leave-start="transform opacity-100 scale-100"
-                                x-transition:leave-end="transform opacity-0 scale-95"
-                                class="absolute right-0 sm:left-0 mt-2 w-52 rounded-xl bg-white border border-slate-200 shadow-xl p-1.5 z-50 text-left">
-                                <a href="{{ route('users.index') }}" @click="open = false" class="flex flex-col px-3 py-2 rounded-lg transition {{ request()->routeIs('users.*') ? 'bg-emerald-50 text-emerald-900 font-bold' : 'text-slate-700 hover:bg-slate-50' }}">
-                                    <span class="text-xs font-bold">Manajemen Pengguna</span>
-                                    <span class="text-[10px] text-slate-400 font-normal">Kelola staf, kasir & hak akses</span>
-                                </a>
-                                <a href="{{ route('settings.index') }}" @click="open = false" class="flex flex-col px-3 py-2 rounded-lg transition {{ request()->routeIs('settings.*') ? 'bg-emerald-50 text-emerald-900 font-bold' : 'text-slate-700 hover:bg-slate-50' }}">
-                                    <span class="text-xs font-bold">Outlet & Perangkat</span>
-                                    <span class="text-[10px] text-slate-400 font-normal">Cabang toko & terminal POS</span>
-                                </a>
+                            <!-- Subnav Master Data -->
+                            <div class="relative" x-data="{ open: false }" @click.outside="open = false" @close.stop="open = false">
+                                <button type="button" @click="open = !open"
+                                    class="px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 {{ (request()->routeIs('products.*') || request()->routeIs('categories.*') || request()->routeIs('inventory.*')) ? 'bg-slate-100 text-slate-900 border border-slate-300 font-bold' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900' }}">
+                                    <span>Master Data</span>
+                                    <svg class="w-3.5 h-3.5 text-slate-400 transition-transform duration-150" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                                </button>
+                                <div x-show="open" x-cloak class="absolute left-0 mt-2 w-52 rounded-xl bg-white border border-slate-200 shadow-xl p-1.5 z-50 text-left">
+                                    <a href="{{ route('products.index') }}" @click="open = false" class="flex flex-col px-3 py-2 rounded-lg transition {{ request()->routeIs('products.*') ? 'bg-emerald-50 text-emerald-900 font-bold' : 'text-slate-700 hover:bg-slate-50' }}">
+                                        <span class="text-xs font-bold">Daftar Produk</span>
+                                        <span class="text-[10px] text-slate-400 font-normal">Katalog harga & SKU</span>
+                                    </a>
+                                    <a href="{{ route('categories.index') }}" @click="open = false" class="flex flex-col px-3 py-2 rounded-lg transition {{ request()->routeIs('categories.*') ? 'bg-emerald-50 text-emerald-900 font-bold' : 'text-slate-700 hover:bg-slate-50' }}">
+                                        <span class="text-xs font-bold">Kategori Produk</span>
+                                        <span class="text-[10px] text-slate-400 font-normal">Pengelompokan menu</span>
+                                    </a>
+                                    <a href="{{ route('inventory.index') }}" @click="open = false" class="flex flex-col px-3 py-2 rounded-lg transition {{ request()->routeIs('inventory.*') ? 'bg-emerald-50 text-emerald-900 font-bold' : 'text-slate-700 hover:bg-slate-50' }}">
+                                        <span class="text-xs font-bold">Inventaris & Stok</span>
+                                        <span class="text-[10px] text-slate-400 font-normal">Manajemen stok produk</span>
+                                    </a>
+                                </div>
                             </div>
-                        </div>
+                            <!-- Subnav Laporan & Audit -->
+                            <div class="relative" x-data="{ open: false }" @click.outside="open = false" @close.stop="open = false">
+                                <button type="button" @click="open = !open"
+                                    class="px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 {{ (request()->routeIs('reports.*') || request()->routeIs('transactions.*') || request()->routeIs('customers.*')) ? 'bg-slate-100 text-slate-900 border border-slate-300 font-bold' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900' }}">
+                                    <span>Laporan & Audit</span>
+                                    <svg class="w-3.5 h-3.5 text-slate-400 transition-transform duration-150" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                                </button>
+                                <div x-show="open" x-cloak class="absolute left-0 mt-2 w-52 rounded-xl bg-white border border-slate-200 shadow-xl p-1.5 z-50 text-left">
+                                    <a href="{{ route('reports.index') }}" @click="open = false" class="flex flex-col px-3 py-2 rounded-lg transition {{ request()->routeIs('reports.*') ? 'bg-emerald-50 text-emerald-900 font-bold' : 'text-slate-700 hover:bg-slate-50' }}">
+                                        <span class="text-xs font-bold">Laporan Penjualan</span>
+                                        <span class="text-[10px] text-slate-400 font-normal">Analisis omzet & laba</span>
+                                    </a>
+                                    <a href="{{ route('transactions.index') }}" @click="open = false" class="flex flex-col px-3 py-2 rounded-lg transition {{ request()->routeIs('transactions.*') ? 'bg-emerald-50 text-emerald-900 font-bold' : 'text-slate-700 hover:bg-slate-50' }}">
+                                        <span class="text-xs font-bold">Riwayat Transaksi</span>
+                                        <span class="text-[10px] text-slate-400 font-normal">Audit semua transaksi</span>
+                                    </a>
+                                    <a href="{{ route('customers.index') }}" @click="open = false" class="flex flex-col px-3 py-2 rounded-lg transition {{ request()->routeIs('customers.*') ? 'bg-emerald-50 text-emerald-900 font-bold' : 'text-slate-700 hover:bg-slate-50' }}">
+                                        <span class="text-xs font-bold">Data Pelanggan</span>
+                                        <span class="text-[10px] text-slate-400 font-normal">Database pelanggan</span>
+                                    </a>
+                                </div>
+                            </div>
+                            <!-- POS Quick Terminal (Discreet secondary access for Admin) -->
+                            <a href="{{ route('pos.index') }}" class="px-2.5 py-1.5 rounded-lg text-emerald-700 hover:bg-emerald-50 transition font-medium flex items-center gap-1">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+                                <span>POS</span>
+                            </a>
                         @endrole
                     </nav>
                 </div>
@@ -246,78 +261,107 @@
             x-transition:leave-end="opacity-0 -translate-y-2"
             class="md:hidden border-t border-slate-200 bg-white px-4 pt-3 pb-5 space-y-3 shadow-lg">
             
-            <div class="grid grid-cols-2 gap-2">
-                <a href="{{ route('dashboard') }}" class="p-2.5 rounded-lg text-center text-xs font-bold {{ request()->routeIs('dashboard') ? 'bg-slate-100 text-slate-900 border border-slate-300' : 'bg-slate-50 text-slate-700 border border-slate-200' }}">
-                    Dashboard
-                </a>
-                @hasanyrole('Admin|Supervisor|Cashier')
-                <a href="{{ route('pos.index') }}" class="p-2.5 rounded-lg text-center text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-300 flex items-center justify-center gap-1.5">
-                    <span class="w-2 h-2 rounded-full bg-emerald-600 animate-pulse"></span>
-                    Terminal POS
-                </a>
-                @endhasanyrole
-            </div>
-
-            @hasanyrole('Admin|Supervisor|Inventory')
-            <div class="pt-2 border-t border-slate-100">
-                <div class="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400 mb-1.5">Katalog & Stok</div>
-                <div class="grid grid-cols-3 gap-1.5 text-xs">
-                    <a href="{{ route('products.index') }}" class="p-2 rounded-lg bg-slate-50 text-center font-medium text-slate-700 hover:bg-slate-100 border border-slate-200">
-                        Produk
+            @role('Owner')
+                <div class="grid grid-cols-2 gap-2 text-xs">
+                    <a href="{{ route('dashboard') }}" class="p-2.5 rounded-lg text-center font-bold {{ request()->routeIs('dashboard') ? 'bg-slate-100 text-slate-900 border border-slate-300' : 'bg-slate-50 text-slate-700 border border-slate-200' }}">
+                        Dashboard Bisnis
                     </a>
-                    <a href="{{ route('categories.index') }}" class="p-2 rounded-lg bg-slate-50 text-center font-medium text-slate-700 hover:bg-slate-100 border border-slate-200">
-                        Kategori
+                    <a href="{{ route('reports.index') }}" class="p-2.5 rounded-lg text-center font-bold {{ request()->routeIs('reports.*') ? 'bg-slate-100 text-slate-900 border border-slate-300' : 'bg-slate-50 text-slate-700 border border-slate-200' }}">
+                        Laporan Penjualan
                     </a>
-                    <a href="{{ route('inventory.index') }}" class="p-2 rounded-lg bg-slate-50 text-center font-medium text-slate-700 hover:bg-slate-100 border border-slate-200">
-                        Inventaris
+                    <a href="{{ route('transactions.index') }}" class="p-2.5 rounded-lg text-center font-bold {{ request()->routeIs('transactions.*') ? 'bg-slate-100 text-slate-900 border border-slate-300' : 'bg-slate-50 text-slate-700 border border-slate-200' }}">
+                        Riwayat Transaksi
+                    </a>
+                    <a href="{{ route('customers.index') }}" class="p-2.5 rounded-lg text-center font-bold {{ request()->routeIs('customers.*') ? 'bg-slate-100 text-slate-900 border border-slate-300' : 'bg-slate-50 text-slate-700 border border-slate-200' }}">
+                        Data Pelanggan
                     </a>
                 </div>
-            </div>
-            @endhasanyrole
-
-            @hasanyrole('Admin|Supervisor|Cashier')
-            <div class="pt-2 border-t border-slate-100">
-                <div class="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400 mb-1.5">Operasional Kasir</div>
-                <div class="grid grid-cols-3 gap-1.5 text-xs">
-                    <a href="{{ route('transactions.index') }}" class="p-2 rounded-lg bg-slate-50 text-center font-medium text-slate-700 hover:bg-slate-100 border border-slate-200">
+            @elserole('Cashier')
+                <div class="grid grid-cols-2 gap-2 text-xs">
+                    <a href="{{ route('dashboard') }}" class="p-2.5 rounded-lg text-center font-bold bg-slate-50 text-slate-700 border border-slate-200">
+                        Ringkasan
+                    </a>
+                    <a href="{{ route('pos.index') }}" class="p-2.5 rounded-lg text-center font-bold bg-emerald-50 text-emerald-800 border border-emerald-300 flex items-center justify-center gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-emerald-600 animate-pulse"></span>
+                        Terminal POS
+                    </a>
+                    <a href="{{ route('shifts.index') }}" class="p-2.5 rounded-lg text-center font-bold bg-slate-50 text-slate-700 border border-slate-200">
+                        Shift Kasir
+                    </a>
+                    <a href="{{ route('transactions.index') }}" class="p-2.5 rounded-lg text-center font-bold bg-slate-50 text-slate-700 border border-slate-200">
                         Transaksi
                     </a>
-                    <a href="{{ route('shifts.index') }}" class="p-2 rounded-lg bg-slate-50 text-center font-medium text-slate-700 hover:bg-slate-100 border border-slate-200">
-                        Shift
-                    </a>
-                    <a href="{{ route('customers.index') }}" class="p-2 rounded-lg bg-slate-50 text-center font-medium text-slate-700 hover:bg-slate-100 border border-slate-200">
+                    <a href="{{ route('customers.index') }}" class="col-span-2 p-2.5 rounded-lg text-center font-bold bg-slate-50 text-slate-700 border border-slate-200">
                         Pelanggan
                     </a>
                 </div>
-            </div>
-            @endhasanyrole
-
-            @hasanyrole('Admin|Supervisor')
-            <div class="pt-2 border-t border-slate-100">
-                <div class="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400 mb-1.5">Laporan & Sinkronisasi</div>
-                <div class="grid grid-cols-2 gap-1.5 text-xs">
-                    <a href="{{ route('reports.index') }}" class="p-2 rounded-lg bg-slate-50 text-center font-medium text-slate-700 hover:bg-slate-100 border border-slate-200">
-                        Laporan Penjualan
+            @elserole('Inventory')
+                <div class="grid grid-cols-2 gap-2 text-xs">
+                    <a href="{{ route('dashboard') }}" class="p-2.5 rounded-lg text-center font-bold bg-slate-50 text-slate-700 border border-slate-200">
+                        Dashboard Stok
                     </a>
-                    <a href="{{ route('sync.index') }}" class="p-2 rounded-lg bg-slate-50 text-center font-medium text-slate-700 hover:bg-slate-100 border border-slate-200">
-                        Sync Center
+                    <a href="{{ route('products.index') }}" class="p-2.5 rounded-lg text-center font-bold bg-slate-50 text-slate-700 border border-slate-200">
+                        Daftar Produk
                     </a>
-                </div>
-            </div>
-            @endhasanyrole
-
-            @role('Admin')
-            <div class="pt-2 border-t border-slate-100">
-                <div class="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400 mb-1.5">Pengaturan Sistem</div>
-                <div class="grid grid-cols-2 gap-1.5 text-xs">
-                    <a href="{{ route('users.index') }}" class="p-2 rounded-lg bg-slate-50 text-center font-medium text-slate-700 hover:bg-slate-100 border border-slate-200">
-                        Kelola Pengguna
+                    <a href="{{ route('categories.index') }}" class="p-2.5 rounded-lg text-center font-bold bg-slate-50 text-slate-700 border border-slate-200">
+                        Kategori
                     </a>
-                    <a href="{{ route('settings.index') }}" class="p-2 rounded-lg bg-slate-50 text-center font-medium text-slate-700 hover:bg-slate-100 border border-slate-200">
-                        Outlet & Alat
+                    <a href="{{ route('inventory.index') }}" class="p-2.5 rounded-lg text-center font-bold bg-slate-50 text-slate-700 border border-slate-200">
+                        Mutasi & Stok
                     </a>
                 </div>
-            </div>
+            @elserole('Supervisor')
+                <div class="grid grid-cols-2 gap-2 text-xs">
+                    <a href="{{ route('dashboard') }}" class="p-2.5 rounded-lg text-center font-bold bg-slate-50 text-slate-700 border border-slate-200">
+                        Dashboard
+                    </a>
+                    <a href="{{ route('pos.index') }}" class="p-2.5 rounded-lg text-center font-bold bg-emerald-50 text-emerald-800 border border-emerald-300 flex items-center justify-center gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-emerald-600 animate-pulse"></span>
+                        Terminal POS
+                    </a>
+                </div>
+                <div class="pt-2 border-t border-slate-100">
+                    <div class="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400 mb-1.5">Operasional & Pengawasan</div>
+                    <div class="grid grid-cols-3 gap-1.5 text-xs">
+                        <a href="{{ route('transactions.index') }}" class="p-2 rounded-lg bg-slate-50 text-center font-medium text-slate-700 hover:bg-slate-100 border border-slate-200">Transaksi</a>
+                        <a href="{{ route('shifts.index') }}" class="p-2 rounded-lg bg-slate-50 text-center font-medium text-slate-700 hover:bg-slate-100 border border-slate-200">Shift</a>
+                        <a href="{{ route('reports.index') }}" class="p-2 rounded-lg bg-slate-50 text-center font-medium text-slate-700 hover:bg-slate-100 border border-slate-200">Laporan</a>
+                    </div>
+                </div>
+                <div class="pt-2 border-t border-slate-100">
+                    <div class="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400 mb-1.5">Katalog & Stok</div>
+                    <div class="grid grid-cols-3 gap-1.5 text-xs">
+                        <a href="{{ route('products.index') }}" class="p-2 rounded-lg bg-slate-50 text-center font-medium text-slate-700 hover:bg-slate-100 border border-slate-200">Produk</a>
+                        <a href="{{ route('categories.index') }}" class="p-2 rounded-lg bg-slate-50 text-center font-medium text-slate-700 hover:bg-slate-100 border border-slate-200">Kategori</a>
+                        <a href="{{ route('inventory.index') }}" class="p-2 rounded-lg bg-slate-50 text-center font-medium text-slate-700 hover:bg-slate-100 border border-slate-200">Inventaris</a>
+                    </div>
+                </div>
+            @else
+                <!-- Admin Mobile View -->
+                <div class="grid grid-cols-2 gap-2 text-xs">
+                    <a href="{{ route('dashboard') }}" class="p-2.5 rounded-lg text-center font-bold bg-slate-50 text-slate-700 border border-slate-200">
+                        Dashboard
+                    </a>
+                    <a href="{{ route('pos.index') }}" class="p-2.5 rounded-lg text-center font-bold bg-emerald-50 text-emerald-800 border border-emerald-300">
+                        Terminal POS
+                    </a>
+                </div>
+                <div class="pt-2 border-t border-slate-100">
+                    <div class="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400 mb-1.5">Administrasi Sistem</div>
+                    <div class="grid grid-cols-3 gap-1.5 text-xs">
+                        <a href="{{ route('users.index') }}" class="p-2 rounded-lg bg-slate-50 text-center font-medium text-slate-700 hover:bg-slate-100 border border-slate-200">Pengguna</a>
+                        <a href="{{ route('settings.index') }}" class="p-2 rounded-lg bg-slate-50 text-center font-medium text-slate-700 hover:bg-slate-100 border border-slate-200">Outlet</a>
+                        <a href="{{ route('sync.index') }}" class="p-2 rounded-lg bg-slate-50 text-center font-medium text-slate-700 hover:bg-slate-100 border border-slate-200">Sync</a>
+                    </div>
+                </div>
+                <div class="pt-2 border-t border-slate-100">
+                    <div class="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400 mb-1.5">Master Data & Laporan</div>
+                    <div class="grid grid-cols-3 gap-1.5 text-xs">
+                        <a href="{{ route('products.index') }}" class="p-2 rounded-lg bg-slate-50 text-center font-medium text-slate-700 hover:bg-slate-100 border border-slate-200">Produk</a>
+                        <a href="{{ route('inventory.index') }}" class="p-2 rounded-lg bg-slate-50 text-center font-medium text-slate-700 hover:bg-slate-100 border border-slate-200">Stok</a>
+                        <a href="{{ route('reports.index') }}" class="p-2 rounded-lg bg-slate-50 text-center font-medium text-slate-700 hover:bg-slate-100 border border-slate-200">Laporan</a>
+                    </div>
+                </div>
             @endrole
         </div>
     </header>

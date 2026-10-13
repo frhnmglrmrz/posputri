@@ -38,6 +38,11 @@ class AdminSeeder extends Seeder
                 'name' => 'Staff Gudang',
                 'role' => 'Inventory',
             ],
+            [
+                'email' => 'owner@berkahmart.test',
+                'name' => 'Pemilik Usaha (Owner)',
+                'role' => 'Owner',
+            ],
             // Fallback accounts for legacy sessions/tests
             [
                 'email' => 'admin@posputri.test',
@@ -58,6 +63,11 @@ class AdminSeeder extends Seeder
                 'email' => 'gudang@posputri.test',
                 'name' => 'Staff Gudang',
                 'role' => 'Inventory',
+            ],
+            [
+                'email' => 'owner@posputri.test',
+                'name' => 'Pemilik Usaha (Owner)',
+                'role' => 'Owner',
             ],
         ];
 

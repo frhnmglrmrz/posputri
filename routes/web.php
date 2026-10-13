@@ -35,9 +35,13 @@ Route::middleware('auth')->group(function () {
         return view('pos.index');
     })->name('pos.index');
 
-    // Operational routes (Cashier, Supervisor, Admin)
+    // Shift Kasir (Cashier, Supervisor, Admin)
     Route::middleware('role:Admin|Supervisor|Cashier')->group(function () {
         Route::get('/shifts', ShiftManager::class)->name('shifts.index');
+    });
+
+    // Riwayat Transaksi & Pelanggan (Cashier, Supervisor, Admin, Owner)
+    Route::middleware('role:Admin|Supervisor|Cashier|Owner')->group(function () {
         Route::get('/transactions', TransactionHistory::class)->name('transactions.index');
         Route::get('/customers', CustomerManager::class)->name('customers.index');
     });
@@ -49,13 +53,17 @@ Route::middleware('auth')->group(function () {
         Route::get('/inventory', InventoryManager::class)->name('inventory.index');
     });
 
-    // Supervisor & Admin routes (Laporan & Sinkronisasi)
-    Route::middleware('role:Admin|Supervisor')->group(function () {
+    // Laporan Penjualan (Admin, Supervisor, Owner)
+    Route::middleware('role:Admin|Supervisor|Owner')->group(function () {
         Route::get('/reports', ReportManager::class)->name('reports.index');
+    });
+
+    // Sinkronisasi (Admin, Supervisor)
+    Route::middleware('role:Admin|Supervisor')->group(function () {
         Route::get('/sync', SyncCenter::class)->name('sync.index');
     });
 
-    // Admin only routes
+    // Admin only routes (Pengguna & Konfigurasi Sistem)
     Route::middleware('role:Admin')->group(function () {
         Route::get('/users', UserManager::class)->name('users.index');
         Route::get('/settings', OutletManager::class)->name('settings.index');

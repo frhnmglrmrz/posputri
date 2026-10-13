@@ -54,6 +54,18 @@ class RoleSeeder extends Seeder
         $supervisorRole = Role::firstOrCreate(['name' => 'Supervisor', 'guard_name' => 'web']);
         $supervisorRole->syncPermissions($supervisorPermissions);
 
+        $ownerPermissions = [
+            'view-owner-dashboard',
+            'view-transactions',
+            'view-basic-reports',
+            'view-sales-reports',
+            'export-reports',
+            'view-analytics',
+        ];
+
+        $ownerRole = Role::firstOrCreate(['name' => 'Owner', 'guard_name' => 'web']);
+        $ownerRole->syncPermissions($ownerPermissions);
+
         $adminRole = Role::firstOrCreate(['name' => 'Admin', 'guard_name' => 'web']);
         $adminRole->syncPermissions(Permission::all());
     }

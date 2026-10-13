@@ -82,8 +82,11 @@ class InventoryManager extends Component
                 }
             }])
             ->when($this->search, function ($query): void {
-                $query->where('name', 'like', "%{$this->search}%")
-                    ->orWhere('sku', 'like', "%{$this->search}%");
+                $query->where(function ($q): void {
+                    $q->where('name', 'like', "%{$this->search}%")
+                        ->orWhere('sku', 'like', "%{$this->search}%")
+                        ->orWhere('barcode', 'like', "%{$this->search}%");
+                });
             })
             ->paginate(15);
 

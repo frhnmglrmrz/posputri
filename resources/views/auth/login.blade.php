@@ -62,7 +62,7 @@
         <!-- Quick 1-Click Role Switcher for Demo -->
         <div class="mt-6 pt-6 border-t border-slate-200 text-xs">
             <p class="text-slate-600 font-medium mb-3 text-center">Akses Cepat Akun Demo (Klik untuk isi otomatis):</p>
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            <div class="grid grid-cols-2 sm:grid-cols-5 gap-2">
                 <button type="button" onclick="document.getElementById('email').value='kasir@berkahmart.test'" class="p-2.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 text-center transition active:scale-95 group">
                     <div class="font-bold text-emerald-800">Kasir</div>
                     <div class="text-[10px] text-emerald-600 truncate">kasir@...</div>
@@ -78,6 +78,10 @@
                 <button type="button" onclick="document.getElementById('email').value='admin@berkahmart.test'" class="p-2.5 rounded-lg bg-indigo-50 hover:bg-indigo-100 border border-indigo-300 text-center transition active:scale-95 group">
                     <div class="font-bold text-indigo-900">Admin</div>
                     <div class="text-[10px] text-indigo-700 truncate">admin@...</div>
+                </button>
+                <button type="button" onclick="document.getElementById('email').value='owner@berkahmart.test'" class="p-2.5 rounded-lg bg-purple-50 hover:bg-purple-100 border border-purple-300 text-center transition active:scale-95 group col-span-2 sm:col-span-1">
+                    <div class="font-bold text-purple-900">Owner</div>
+                    <div class="text-[10px] text-purple-700 truncate">owner@...</div>
                 </button>
             </div>
         </div>

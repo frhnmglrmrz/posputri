@@ -1,5 +1,5 @@
 import { db, saveOfflineTransaction } from './db';
-import { initBarcodeScanner } from './scanner';
+import { CameraBarcodeScanner, initBarcodeScanner, playScanSound } from './scanner';
 
 /**
  * Alpine.js POS component data factory.
@@ -28,6 +28,12 @@ export function createPosComponent(config = {}) {
         isSyncing: false,
         pendingSyncCount: 0,
         isLoading: true,
+
+        // Camera Barcode Scanner State
+        isCameraModalOpen: false,
+        cameraScannerInstance: null,
+        cameraStatusText: 'Arahkan kamera ke barcode produk',
+        manualBarcodeInput: '',
 
         // Cart State
         cart: [],
@@ -148,10 +154,10 @@ export function createPosComponent(config = {}) {
 
         handleQuickAddBySku(code) {
             const cleanCode = code.trim().toLowerCase();
-            // 1. Check exact match by SKU, barcode, or Name
+            // 1. Check exact match by Barcode, SKU, or Name
             let found = this.products.find(p =>
-                (p.sku && p.sku.toLowerCase() === cleanCode) ||
                 (p.barcode && p.barcode.toLowerCase() === cleanCode) ||
+                (p.sku && p.sku.toLowerCase() === cleanCode) ||
                 (p.name && p.name.toLowerCase() === cleanCode)
             );
 
@@ -162,18 +168,54 @@ export function createPosComponent(config = {}) {
 
             if (found) {
                 this.addToCart(found);
-                this.showToast(`Produk ditambahkan: ${found.name}`);
+                playScanSound(true);
+                this.showToast(`Produk ditambahkan: ${found.name} (Stok: ${found.stock ?? 0})`);
                 this.searchQuery = '';
                 this.filterProducts();
             } else if (this.filteredProducts.length > 1) {
                 this.showToast(`Ditemukan ${this.filteredProducts.length} produk yang cocok. Silakan pilih dari daftar.`);
             } else {
-                this.showToast(`Produk / SKU "${code.trim()}" tidak ditemukan!`, 'error');
+                playScanSound(false);
+                this.showToast(`Barcode / SKU "${code.trim()}" tidak ditemukan dalam sistem!`, 'error');
             }
         },
 
         handleBarcodeScanned(barcode) {
             this.handleQuickAddBySku(barcode);
+        },
+
+        openCameraScanner() {
+            this.isCameraModalOpen = true;
+            this.cameraStatusText = 'Menyiapkan kamera...';
+            this.$nextTick(async () => {
+                const videoEl = document.getElementById('camera-scanner-video');
+                if (!videoEl) return;
+                if (!this.cameraScannerInstance) {
+                    this.cameraScannerInstance = new CameraBarcodeScanner(
+                        (scannedCode) => {
+                            this.handleBarcodeScanned(scannedCode);
+                        },
+                        (status) => {
+                            this.cameraStatusText = status;
+                        }
+                    );
+                }
+                await this.cameraScannerInstance.start(videoEl);
+            });
+        },
+
+        closeCameraScanner() {
+            if (this.cameraScannerInstance) {
+                this.cameraScannerInstance.stop();
+            }
+            this.isCameraModalOpen = false;
+        },
+
+        handleManualBarcodeSubmit() {
+            if (!this.manualBarcodeInput || !this.manualBarcodeInput.trim()) return;
+            const code = this.manualBarcodeInput.trim();
+            this.manualBarcodeInput = '';
+            this.handleBarcodeScanned(code);
         },
 
         // Cart Actions
