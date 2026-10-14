@@ -1,5 +1,5 @@
 import { db, saveOfflineTransaction } from './db';
-import { CameraBarcodeScanner, initBarcodeScanner, playScanSound } from './scanner';
+import { CameraBarcodeScanner, initBarcodeScanner, playScanSound, simulateHardwareScan } from './scanner';
 
 /**
  * Alpine.js POS component data factory.
@@ -34,6 +34,13 @@ export function createPosComponent(config = {}) {
         cameraScannerInstance: null,
         cameraStatusText: 'Arahkan kamera ke barcode produk',
         manualBarcodeInput: '',
+        lastScannedProduct: null,
+
+        // Hardware Barcode Scanner Simulator State
+        isSimulatorModalOpen: false,
+        simulatorInputCode: '',
+        simulatorLog: [],
+        simulatorDoubleScan: false,
 
         // Cart State
         cart: [],
@@ -60,14 +67,22 @@ export function createPosComponent(config = {}) {
             // 1. Load data from IndexedDB
             await this.loadLocalData();
 
-            // 2. Setup Barcode Scanner
+            // 2. Fetch fresh catalog & product photos in background if online
+            if (this.isOnline && window.posSyncEngine) {
+                window.posSyncEngine.fetchIncrementalChanges();
+            }
+
+            // 3. Setup Barcode Scanner
             initBarcodeScanner((barcode) => {
                 this.handleBarcodeScanned(barcode);
             });
 
-            // 3. Listen for Connectivity & Sync events
+            // 4. Listen for Connectivity & Sync events
             window.addEventListener('pos:connectivity-change', (e) => {
                 this.isOnline = e.detail.isOnline;
+                if (this.isOnline && window.posSyncEngine) {
+                    window.posSyncEngine.fetchIncrementalChanges();
+                }
             });
 
             window.addEventListener('pos:sync-status-changed', (e) => {
@@ -83,7 +98,35 @@ export function createPosComponent(config = {}) {
                 this.loadLocalData();
             });
 
+            window.addEventListener('pos:barcode-debounced', (e) => {
+                if (this.isSimulatorModalOpen) {
+                    this.addSimulatorLog(`⚠️ Anti-Double Scan aktif: Pemindaian ganda "${e.detail.code}" diabaikan.`);
+                }
+                this.showToast(`Pemindaian berulang dicegah (Anti-Double Scan: ${e.detail.code})`, 'warning');
+            });
+
             this.updatePendingCount();
+        },
+
+        async syncAllNow() {
+            if (!this.isOnline) {
+                this.showToast('Mode offline: transaksi tersimpan lokal dan akan sinkron saat terhubung.', 'warning');
+                return;
+            }
+            this.isSyncing = true;
+            try {
+                if (window.posSyncEngine) {
+                    await window.posSyncEngine.syncPendingTransactions();
+                    await window.posSyncEngine.fetchIncrementalChanges();
+                    await this.loadLocalData();
+                    this.showToast('Sinkronisasi transaksi & katalog produk selesai!', 'success');
+                }
+            } catch (err) {
+                console.error('Manual sync failed:', err);
+                this.showToast('Gagal menyinkronkan data dengan server.', 'error');
+            } finally {
+                this.isSyncing = false;
+            }
         },
 
         async loadLocalData() {
@@ -167,21 +210,70 @@ export function createPosComponent(config = {}) {
             }
 
             if (found) {
+                this.lastScannedProduct = found;
                 this.addToCart(found);
                 playScanSound(true);
                 this.showToast(`Produk ditambahkan: ${found.name} (Stok: ${found.stock ?? 0})`);
+                if (this.isSimulatorModalOpen) {
+                    this.addSimulatorLog(`✅ Ditemukan: "${found.name}" (Rp${Number(found.selling_price).toLocaleString('id-ID')}) -> Masuk Keranjang!`);
+                }
                 this.searchQuery = '';
                 this.filterProducts();
             } else if (this.filteredProducts.length > 1) {
                 this.showToast(`Ditemukan ${this.filteredProducts.length} produk yang cocok. Silakan pilih dari daftar.`);
+                if (this.isSimulatorModalOpen) {
+                    this.addSimulatorLog(`ℹ️ Ditemukan ${this.filteredProducts.length} produk cocok. Pilih dari daftar.`);
+                }
             } else {
                 playScanSound(false);
                 this.showToast(`Barcode / SKU "${code.trim()}" tidak ditemukan dalam sistem!`, 'error');
+                if (this.isSimulatorModalOpen) {
+                    this.addSimulatorLog(`❌ Barcode "${code.trim()}" tidak ditemukan dalam sistem!`);
+                }
             }
         },
 
         handleBarcodeScanned(barcode) {
             this.handleQuickAddBySku(barcode);
+        },
+
+        openScannerSimulator() {
+            this.isSimulatorModalOpen = true;
+            this.simulatorLog = ['Simulator aktif. Pilih produk di bawah atau ketik kode barcode kustom.'];
+            if (!this.simulatorInputCode && this.products.length > 0) {
+                const sampleProd = this.products.find(p => p.barcode) || this.products[0];
+                this.simulatorInputCode = sampleProd.barcode || sampleProd.sku;
+            }
+        },
+
+        closeScannerSimulator() {
+            this.isSimulatorModalOpen = false;
+        },
+
+        triggerSimulatedScan(barcodeToScan = null, forceDouble = false) {
+            const code = (barcodeToScan || this.simulatorInputCode || '').trim();
+            if (!code) {
+                this.addSimulatorLog('⚠️ Masukkan atau pilih kode barcode terlebih dahulu.');
+                return;
+            }
+
+            this.addSimulatorLog(`⚡ [Hardware Scanner] Memancarkan ${code.length} keystroke (<20ms) + ENTER...`);
+            simulateHardwareScan(code, 20);
+
+            if (forceDouble || this.simulatorDoubleScan) {
+                setTimeout(() => {
+                    this.addSimulatorLog(`⚡ [Hardware Scanner] Tembakan ke-2 seketika (menguji anti-double scan)...`);
+                    simulateHardwareScan(code, 20);
+                }, 80);
+            }
+        },
+
+        addSimulatorLog(message) {
+            const time = new Date().toLocaleTimeString('id-ID');
+            this.simulatorLog.unshift(`[${time}] ${message}`);
+            if (this.simulatorLog.length > 8) {
+                this.simulatorLog.pop();
+            }
         },
 
         openCameraScanner() {
@@ -232,6 +324,7 @@ export function createPosComponent(config = {}) {
                     sku: product.sku,
                     barcode: product.barcode,
                     name: product.name,
+                    image_url: product.image_url || '/images/product-placeholder.svg',
                     price: parseFloat(product.selling_price) || 0,
                     quantity: 1,
                     discount: 0,

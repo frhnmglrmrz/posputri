@@ -74,6 +74,8 @@ export class SyncEngine {
                         if (cat.deleted_at) {
                             await db.categories.where('uuid').equals(cat.uuid).delete();
                         } else {
+                            const existing = await db.categories.where('uuid').equals(cat.uuid).first();
+                            if (existing) cat.id = existing.id;
                             await db.categories.put(cat);
                         }
                     }
@@ -82,11 +84,15 @@ export class SyncEngine {
                         if (prod.deleted_at) {
                             await db.products.where('uuid').equals(prod.uuid).delete();
                         } else {
+                            const existing = await db.products.where('uuid').equals(prod.uuid).first();
+                            if (existing) prod.id = existing.id;
                             await db.products.put(prod);
                         }
                     }
 
                     for (const pay of payment_methods || []) {
+                        const existing = await db.payment_methods.where('uuid').equals(pay.uuid).first();
+                        if (existing) pay.id = existing.id;
                         await db.payment_methods.put(pay);
                     }
                 });

@@ -463,12 +463,13 @@ class OfflinePosSystemTest extends TestCase
     {
         $cashier = User::where('email', 'kasir@posputri.test')->first();
 
-        // Allowed routes
+        // Allowed routes (POS, products read-only, transactions)
         $this->actingAs($cashier)->get(route('pos.index'))->assertOk();
-        $this->actingAs($cashier)->get(route('shifts.index'))->assertOk();
+        $this->actingAs($cashier)->get(route('products.index'))->assertOk();
         $this->actingAs($cashier)->get(route('transactions.index'))->assertOk();
 
-        // Restricted admin/supervisor routes should return 403 Forbidden
+        // Restricted routes (shifts eliminated for cashier, admin/supervisor only)
+        $this->actingAs($cashier)->get(route('shifts.index'))->assertForbidden();
         $this->actingAs($cashier)->get(route('users.index'))->assertForbidden();
         $this->actingAs($cashier)->get(route('settings.index'))->assertForbidden();
         $this->actingAs($cashier)->get(route('inventory.index'))->assertForbidden();
@@ -504,7 +505,8 @@ class OfflinePosSystemTest extends TestCase
         $cashierRes = $this->actingAs($cashier)->get(route('dashboard'));
         $cashierRes->assertOk()
             ->assertSee('Selamat Datang, '.$cashier->name)
-            ->assertSee('Status Shift Anda')
+            ->assertSee('Status Operasional')
+            ->assertSee('SIAP TRANSAKSI')
             ->assertSee('Penjualan Saya Hari Ini')
             ->assertSee('BUKA KASIR SEKARANG');
     }

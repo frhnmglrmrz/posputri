@@ -6,14 +6,16 @@ use App\Models\Category;
 use App\Models\Outlet;
 use App\Models\Product;
 use App\Models\Stock;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 use Livewire\WithPagination;
 
 class ProductManager extends Component
 {
-    use WithPagination;
+    use WithFileUploads, WithPagination;
 
     public string $search = '';
 
@@ -41,6 +43,13 @@ class ProductManager extends Component
 
     public bool $is_active = true;
 
+    /** @var mixed */
+    public $imageFile = null;
+
+    public ?string $currentImage = null;
+
+    public bool $removeImage = false;
+
     protected function rules(): array
     {
         return [
@@ -51,12 +60,21 @@ class ProductManager extends Component
             'selling_price' => ['required', 'numeric', 'min:0'],
             'tax_rate' => ['nullable', 'numeric', 'min:0'],
             'is_active' => ['boolean'],
+            'imageFile' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
         ];
+    }
+
+    protected function authorizeManage(): void
+    {
+        if (auth()->user() && auth()->user()->hasRole('Cashier') && ! auth()->user()->hasAnyRole(['Admin', 'Supervisor', 'Inventory'])) {
+            abort(403, 'Kasir hanya memiliki hak akses untuk melihat data katalog produk.');
+        }
     }
 
     public function openCreateModal(): void
     {
-        $this->reset(['productId', 'category_id', 'sku', 'barcode', 'name', 'purchase_price', 'selling_price', 'tax_rate', 'initial_stock', 'is_active']);
+        $this->authorizeManage();
+        $this->reset(['productId', 'category_id', 'sku', 'barcode', 'name', 'purchase_price', 'selling_price', 'tax_rate', 'initial_stock', 'is_active', 'imageFile', 'currentImage', 'removeImage']);
         $this->is_active = true;
         $this->resetErrorBag();
         $this->isModalOpen = true;
@@ -64,6 +82,7 @@ class ProductManager extends Component
 
     public function edit(int $id): void
     {
+        $this->authorizeManage();
         $product = Product::findOrFail($id);
         $this->productId = $product->id;
         $this->category_id = $product->category_id;
@@ -74,6 +93,9 @@ class ProductManager extends Component
         $this->selling_price = (float) $product->selling_price;
         $this->tax_rate = (float) $product->tax_rate;
         $this->is_active = (bool) $product->is_active;
+        $this->currentImage = $product->image;
+        $this->imageFile = null;
+        $this->removeImage = false;
 
         $outlet = Outlet::first();
         $this->initial_stock = $outlet ? (int) ($product->stocks()->where('outlet_id', $outlet->id)->value('quantity') ?? 0) : 0;
@@ -82,15 +104,43 @@ class ProductManager extends Component
         $this->isModalOpen = true;
     }
 
+    public function removeCurrentImage(): void
+    {
+        $this->removeImage = true;
+        $this->currentImage = null;
+        $this->imageFile = null;
+    }
+
     public function save(): void
     {
+        $this->authorizeManage();
         $validated = $this->validate();
+        unset($validated['imageFile']);
 
         if ($this->productId) {
             $product = Product::findOrFail($this->productId);
+
+            if ($this->removeImage) {
+                if ($product->image && Storage::disk('public')->exists($product->image)) {
+                    Storage::disk('public')->delete($product->image);
+                }
+                $validated['image'] = null;
+            }
+
+            if ($this->imageFile) {
+                if ($product->image && Storage::disk('public')->exists($product->image)) {
+                    Storage::disk('public')->delete($product->image);
+                }
+                $validated['image'] = $this->imageFile->store('products', 'public');
+            }
+
             $product->update($validated);
             session()->flash('success', "Produk '{$this->name}' berhasil diperbarui.");
         } else {
+            if ($this->imageFile) {
+                $validated['image'] = $this->imageFile->store('products', 'public');
+            }
+
             $product = Product::create([
                 'uuid' => (string) Str::uuid(),
                 'sku' => Product::generateNextSku(),
@@ -98,11 +148,11 @@ class ProductManager extends Component
             ]);
 
             $outlet = Outlet::first();
-            if ($outlet && $this->initial_stock > 0) {
+            if ($outlet) {
                 Stock::create([
                     'outlet_id' => $outlet->id,
                     'product_id' => $product->id,
-                    'quantity' => $this->initial_stock,
+                    'quantity' => max(0, (int) $this->initial_stock),
                 ]);
             }
 
@@ -110,11 +160,12 @@ class ProductManager extends Component
         }
 
         $this->isModalOpen = false;
-        $this->reset(['productId', 'category_id', 'sku', 'barcode', 'name', 'purchase_price', 'selling_price', 'tax_rate', 'initial_stock']);
+        $this->reset(['productId', 'category_id', 'sku', 'barcode', 'name', 'purchase_price', 'selling_price', 'tax_rate', 'initial_stock', 'imageFile', 'currentImage', 'removeImage']);
     }
 
     public function delete(int $id): void
     {
+        $this->authorizeManage();
         $product = Product::findOrFail($id);
         $product->delete();
         session()->flash('success', "Produk '{$product->name}' berhasil dihapus.");

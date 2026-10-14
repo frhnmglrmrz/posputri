@@ -10,12 +10,34 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Storage;
 
-#[Fillable(['uuid', 'category_id', 'sku', 'barcode', 'name', 'purchase_price', 'selling_price', 'tax_rate', 'is_active'])]
+#[Fillable(['uuid', 'category_id', 'sku', 'barcode', 'name', 'image', 'purchase_price', 'selling_price', 'tax_rate', 'is_active'])]
 class Product extends Model
 {
     /** @use HasFactory<ProductFactory> */
     use HasCustomUuid, HasFactory, SoftDeletes;
+
+    protected $appends = ['image_url'];
+
+    public function getImageUrlAttribute(): string
+    {
+        if (empty($this->image)) {
+            return asset('images/product-placeholder.svg');
+        }
+
+        if (str_starts_with($this->image, 'http://') || str_starts_with($this->image, 'https://')) {
+            return $this->image;
+        }
+
+        $cleanPath = ltrim(str_replace('storage/', '', $this->image), '/');
+
+        if (Storage::disk('public')->exists($cleanPath)) {
+            return asset('storage/'.$cleanPath);
+        }
+
+        return asset('images/product-placeholder.svg');
+    }
 
     protected static function booted(): void
     {

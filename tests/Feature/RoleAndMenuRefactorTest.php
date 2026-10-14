@@ -128,14 +128,25 @@ class RoleAndMenuRefactorTest extends TestCase
         $cashier = User::where('email', 'kasir@berkahmart.test')->first();
         $this->assertTrue($cashier->hasRole('Cashier'));
 
+        // Cashier can access POS, product catalog (read-only), transactions, and customers
         $this->actingAs($cashier)->get(route('pos.index'))->assertOk();
-        $this->actingAs($cashier)->get(route('shifts.index'))->assertOk();
+        $this->actingAs($cashier)->get(route('products.index'))->assertOk();
+        $this->actingAs($cashier)->get(route('transactions.index'))->assertOk();
+        $this->actingAs($cashier)->get(route('customers.index'))->assertOk();
 
+        // Cashier is forbidden from shift operations (shifts eliminated from cashier workflow), reports, inventory, users, settings
+        $this->actingAs($cashier)->get(route('shifts.index'))->assertForbidden();
         $this->actingAs($cashier)->get(route('reports.index'))->assertForbidden();
         $this->actingAs($cashier)->get(route('inventory.index'))->assertForbidden();
-        $this->actingAs($cashier)->get(route('products.index'))->assertForbidden();
+        $this->actingAs($cashier)->get(route('categories.index'))->assertForbidden();
         $this->actingAs($cashier)->get(route('users.index'))->assertForbidden();
         $this->actingAs($cashier)->get(route('settings.index'))->assertForbidden();
+
+        // Cashier cannot mutate products in ProductManager (read-only enforcement)
+        Livewire::actingAs($cashier)
+            ->test(ProductManager::class)
+            ->call('openCreateModal')
+            ->assertForbidden();
     }
 
     /**

@@ -57,11 +57,11 @@
                                 <span class="w-2 h-2 rounded-full bg-emerald-600 animate-pulse"></span>
                                 Terminal POS
                             </a>
-                            <a href="{{ route('shifts.index') }}" class="px-3 py-1.5 rounded-lg transition {{ request()->routeIs('shifts.*') ? 'bg-slate-100 text-slate-900 border border-slate-300 font-bold' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900' }}">
-                                Shift Kasir
-                            </a>
                             <a href="{{ route('transactions.index') }}" class="px-3 py-1.5 rounded-lg transition {{ request()->routeIs('transactions.*') ? 'bg-slate-100 text-slate-900 border border-slate-300 font-bold' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900' }}">
                                 Riwayat Transaksi
+                            </a>
+                            <a href="{{ route('products.index') }}" class="px-3 py-1.5 rounded-lg transition {{ request()->routeIs('products.*') ? 'bg-slate-100 text-slate-900 border border-slate-300 font-bold' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900' }}">
+                                Katalog Produk
                             </a>
                             <a href="{{ route('customers.index') }}" class="px-3 py-1.5 rounded-lg transition {{ request()->routeIs('customers.*') ? 'bg-slate-100 text-slate-900 border border-slate-300 font-bold' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900' }}">
                                 Pelanggan
@@ -285,11 +285,11 @@
                         <span class="w-2 h-2 rounded-full bg-emerald-600 animate-pulse"></span>
                         Terminal POS
                     </a>
-                    <a href="{{ route('shifts.index') }}" class="p-2.5 rounded-lg text-center font-bold bg-slate-50 text-slate-700 border border-slate-200">
-                        Shift Kasir
-                    </a>
                     <a href="{{ route('transactions.index') }}" class="p-2.5 rounded-lg text-center font-bold bg-slate-50 text-slate-700 border border-slate-200">
                         Transaksi
+                    </a>
+                    <a href="{{ route('products.index') }}" class="p-2.5 rounded-lg text-center font-bold bg-slate-50 text-slate-700 border border-slate-200">
+                        Katalog Produk
                     </a>
                     <a href="{{ route('customers.index') }}" class="col-span-2 p-2.5 rounded-lg text-center font-bold bg-slate-50 text-slate-700 border border-slate-200">
                         Pelanggan

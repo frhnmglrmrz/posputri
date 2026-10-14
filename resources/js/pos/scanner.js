@@ -93,6 +93,7 @@ export function initBarcodeScanner(onBarcodeScanned) {
 
                 if (isDuplicateScan(scannedCode)) {
                     console.log('Barcode scan debounced (duplicate):', scannedCode);
+                    window.dispatchEvent(new CustomEvent('pos:barcode-debounced', { detail: { code: scannedCode } }));
                     return;
                 }
 
@@ -112,6 +113,51 @@ export function initBarcodeScanner(onBarcodeScanned) {
             buffer += e.key;
         }
     });
+}
+
+/**
+ * Simulate physical barcode scanner input by rapidly dispatching keydown events
+ * to window, mimicking a USB/Bluetooth keyboard wedge scanner.
+ */
+export function simulateHardwareScan(barcode, intervalMs = 20) {
+    if (!barcode) return;
+
+    const cleanCode = String(barcode).trim();
+    if (!cleanCode) return;
+
+    // Blur active input field so the event is processed globally by the scanner buffer
+    if (document.activeElement && typeof document.activeElement.blur === 'function') {
+        const tag = document.activeElement.tagName;
+        if (tag === 'INPUT' || tag === 'TEXTAREA') {
+            document.activeElement.blur();
+        }
+    }
+
+    const chars = cleanCode.split('');
+    chars.forEach((char, index) => {
+        setTimeout(() => {
+            window.dispatchEvent(new KeyboardEvent('keydown', {
+                key: char,
+                bubbles: true,
+                cancelable: true,
+            }));
+        }, index * intervalMs);
+    });
+
+    // Send Enter key at the end
+    setTimeout(() => {
+        window.dispatchEvent(new KeyboardEvent('keydown', {
+            key: 'Enter',
+            bubbles: true,
+            cancelable: true,
+        }));
+    }, chars.length * intervalMs + 20);
+}
+
+// Attach globally for browser console access
+if (typeof window !== 'undefined') {
+    window.simulateHardwareScan = simulateHardwareScan;
+    window.simulateBarcode = simulateHardwareScan;
 }
 
 /**

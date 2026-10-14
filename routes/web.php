@@ -35,8 +35,8 @@ Route::middleware('auth')->group(function () {
         return view('pos.index');
     })->name('pos.index');
 
-    // Shift Kasir (Cashier, Supervisor, Admin)
-    Route::middleware('role:Admin|Supervisor|Cashier')->group(function () {
+    // Shift Kasir - Pengawasan & Audit Historis (Supervisor, Admin)
+    Route::middleware('role:Admin|Supervisor')->group(function () {
         Route::get('/shifts', ShiftManager::class)->name('shifts.index');
     });
 
@@ -46,9 +46,13 @@ Route::middleware('auth')->group(function () {
         Route::get('/customers', CustomerManager::class)->name('customers.index');
     });
 
-    // Inventory, Supervisor & Admin routes (Input Barang, Kategori & Stok Opname)
-    Route::middleware('role:Admin|Supervisor|Inventory')->group(function () {
+    // Katalog Produk (Inventory, Supervisor, Admin, dan Kasir read-only)
+    Route::middleware('role:Admin|Supervisor|Inventory|Cashier')->group(function () {
         Route::get('/products', ProductManager::class)->name('products.index');
+    });
+
+    // Kategori & Inventaris Stok (Admin, Supervisor, Inventory)
+    Route::middleware('role:Admin|Supervisor|Inventory')->group(function () {
         Route::get('/categories', CategoryManager::class)->name('categories.index');
         Route::get('/inventory', InventoryManager::class)->name('inventory.index');
     });

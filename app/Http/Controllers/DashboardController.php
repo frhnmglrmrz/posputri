@@ -32,11 +32,6 @@ class DashboardController extends Controller
         // 1. CASHIER ROLE VIEW
         // -------------------------------------------------------------
         if ($user->hasRole('Cashier') && ! $user->hasAnyRole(['Admin', 'Supervisor'])) {
-            $activeShift = Shift::where('cashier_id', $user->id)
-                ->where('status', ShiftStatus::Open)
-                ->latest('opened_at')
-                ->first();
-
             $todayCompletedQuery = Transaction::where('cashier_id', $user->id)
                 ->whereDate('transaction_at', Carbon::today())
                 ->where('status', TransactionStatus::Completed);
@@ -62,7 +57,6 @@ class DashboardController extends Controller
                 'roleView' => 'cashier',
                 'user' => $user,
                 'outlet' => $outlet,
-                'activeShift' => $activeShift,
                 'cashierRevenue' => $cashierRevenue,
                 'cashierTxCount' => $cashierTxCount,
                 'cashierCashTotal' => $cashierCashTotal,

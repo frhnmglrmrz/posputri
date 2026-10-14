@@ -2,42 +2,34 @@
 <div class="space-y-6">
     <!-- Top Action & Shift Grid -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-        <!-- 1. Status Shift Card -->
+        <!-- 1. Status Kasir & Operasional -->
         <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm flex flex-col justify-between">
             <div>
                 <div class="flex items-center justify-between mb-3">
-                    <span class="text-xs font-semibold uppercase tracking-wider text-slate-500 font-mono">Status Shift Anda</span>
-                    <span class="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-mono font-bold {{ $activeShift ? 'bg-emerald-50 text-emerald-800 border border-emerald-300' : 'bg-amber-50 text-amber-800 border border-amber-300' }}">
-                        <span class="w-2 h-2 rounded-full {{ $activeShift ? 'bg-emerald-600 animate-pulse' : 'bg-amber-500' }}"></span>
-                        {{ $activeShift ? 'SHIFT AKTIF' : 'BELUM BUKA SHIFT' }}
+                    <span class="text-xs font-semibold uppercase tracking-wider text-slate-500 font-mono">Status Operasional</span>
+                    <span class="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-mono font-bold bg-emerald-50 text-emerald-800 border border-emerald-300">
+                        <span class="w-2 h-2 rounded-full bg-emerald-600 animate-pulse"></span>
+                        SIAP TRANSAKSI
                     </span>
                 </div>
 
-                @if($activeShift)
                 <div class="space-y-2">
-                    <div class="text-xl font-bold text-slate-900">Shift #{{ $activeShift->id }}</div>
+                    <div class="text-xl font-bold text-slate-900">{{ $user->name }}</div>
                     <div class="text-xs text-slate-500">
-                        Dibuka pukul <strong class="text-slate-800">{{ $activeShift->opened_at ? $activeShift->opened_at->format('H:i') : '-' }} WIB</strong>
-                        ({{ $activeShift->opened_at ? $activeShift->opened_at->diffForHumans(null, true) : 'Baru dibuka' }})
+                        Outlet: <strong class="text-slate-800">{{ $outlet->name ?? 'Outlet Utama' }}</strong>
                     </div>
                     <div class="text-xs text-slate-600 font-medium">
-                        Modal Kas Awal: <strong class="text-emerald-700 font-mono tabular-nums font-bold">Rp{{ number_format($activeShift->opening_cash, 0, ',', '.') }}</strong>
+                        Tanggal: <strong class="text-emerald-700 font-mono">{{ now()->translatedFormat('l, d F Y') }}</strong>
                     </div>
                 </div>
-                @else
-                <div class="space-y-1 py-1">
-                    <p class="text-sm font-semibold text-slate-800">Anda belum membuka shift kasir.</p>
-                    <p class="text-xs text-slate-500">Buka shift kasir terlebih dahulu untuk memasukkan modal kas awal.</p>
-                </div>
-                @endif
             </div>
 
             <div class="mt-5 pt-3 border-t border-slate-200">
-                <a href="{{ route('shifts.index') }}" class="w-full py-2 px-3 rounded-lg {{ $activeShift ? 'bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-800' : 'bg-emerald-600 hover:bg-emerald-700 text-white font-bold' }} text-xs font-semibold transition flex items-center justify-center gap-1.5 active:scale-98">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                <a href="{{ route('pos.index') }}" class="w-full py-2 px-3 rounded-lg bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 text-emerald-800 text-xs font-bold transition flex items-center justify-center gap-1.5 active:scale-98">
+                    <svg class="w-4 h-4 text-emerald-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                     </svg>
-                    <span>{{ $activeShift ? 'Kelola / Tutup Shift' : 'Buka Shift Sekarang' }}</span>
+                    <span>Mulai Penjualan Langsung</span>
                 </a>
             </div>
         </div>
@@ -182,13 +174,14 @@
         </div>
 
         <div class="p-4 rounded-xl bg-white border border-slate-200 shadow-sm">
-            <div class="font-bold text-amber-800 mb-1 flex items-center gap-1.5">
+            <div class="font-bold text-emerald-700 mb-1 flex items-center gap-1.5">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
-                <span>Tutup Shift Tepat Waktu</span>
+                <span>Pemindaian Barcode</span>
             </div>
-            <p class="text-slate-600 leading-relaxed">Hitung uang tunai fisik di laci kasir saat pergantian jam kerja untuk menjaga akurasi rekonsiliasi kas.</p>
+            <p class="text-slate-600 leading-relaxed">Gunakan scanner barcode USB/Bluetooth atau kamera perangkat untuk mempercepat input produk secara akurat.</p>
         </div>
     </div>
 </div>
